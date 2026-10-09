@@ -1,4 +1,36 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#082b44"><title>釣りいこ！マグロ大作戦</title><link rel="stylesheet" href="style.css"></head><body><main id="app">
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#082b44"><title>釣りいこ！マグロ大作戦</title><style>*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#061b2a;color:#edf5f1;font-family:system-ui,-apple-system,'Yu Gothic',sans-serif;overscroll-behavior:none}button,input{font:inherit}button{cursor:pointer;border:0;color:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent}button:focus-visible,input:focus-visible{outline:3px solid #fff;outline-offset:3px}[hidden]{display:none!important}
+#app{--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);position:relative;isolation:isolate;max-width:460px;height:100dvh;min-height:480px;padding-top:var(--safe-top);padding-bottom:var(--safe-bottom);margin:auto;overflow:hidden;background:#0b5166}#sea{position:absolute;width:100%;height:100%;inset:0;touch-action:none}
+header{position:absolute;top:calc(var(--safe-top) + 7px);left:16px;right:12px;display:flex;align-items:center;gap:6px}.brand{flex:1;min-width:0}.brand>span{font-size:8px;letter-spacing:1px;color:#acd2d5;font-weight:700}h1{font-size:15px;letter-spacing:.2px;margin:2px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}header button{min-width:44px;height:44px;background:#082b40a8;border:1px solid #b2d5dc40;border-radius:12px;font-size:10px;font-weight:700}#pause{font-size:20px}
+#hud{position:absolute;top:calc(var(--safe-top) + 59px);left:16px;right:16px;display:flex;gap:14px;border-top:1px solid #c4e9e533;padding-top:6px}#hud div{flex:1}#hud div:first-child{flex:1.3}#hud small{display:block;font-size:10px;color:#acd0d5}#hud strong{font-size:18px;font-variant-numeric:tabular-nums}
+#mission{position:absolute;top:calc(var(--waterline) + 16px);left:16px;font-size:12px;color:#f5d58b;font-weight:750;pointer-events:none}#app[data-phase=down] #mission,#app[data-phase=up] #mission,#app[data-phase=landing] #mission,#app[data-phase=result] #mission{display:none}
+#toast{position:absolute;top:calc(var(--waterline) + 12px);left:50%;transform:translateX(-50%);width:max-content;max-width:94%;background:#062b40ed;border:1px solid #759faf40;padding:5px 12px;border-radius:12px;font-size:16px;font-weight:800;color:#ffe294;white-space:nowrap;text-align:center;pointer-events:none;z-index:2;transition:opacity .2s}#caughtName{display:none}
+#dock{position:absolute;bottom:0;left:0;right:0;padding:12px 16px calc(var(--safe-bottom) + 8px);background:linear-gradient(transparent,#08293f 19%,#08293f);touch-action:none}
+#result{display:flex;align-items:center;flex-direction:column;gap:2px;margin:0 0 12px;min-height:81px}#resultTitle{font-size:16px;font-weight:750}#resultMoney{font-size:32px;line-height:1.2;color:#ffdb7d;letter-spacing:1px}#resultDetail{font-size:12px;color:#b7d0d8}#recordBadge{font-size:11px;color:#ffdf8b;letter-spacing:1px;min-height:16px;font-weight:700}
+#upgrades{display:flex;gap:10px;margin:0 0 12px}#upgrades button{flex:1;text-align:left;min-height:69px;border-radius:14px;padding:8px 12px;background:#16415a;border:1px solid #8db7c54d}#upgrades button:not(:disabled){border-color:#eacb70a0}#upgrades button span{font-size:12px;font-weight:750;display:block}#upgrades b{font-size:17px;display:inline-block;margin-top:3px;color:#f4d88b}#upgrades small{display:block;font-size:11px;color:#adcad4}#upgrades button:disabled{opacity:.55;cursor:default}
+.primary{width:100%;height:50px;min-height:44px;border-radius:15px;background:var(--accent,#f3c760);color:#193746;font-size:17px;font-weight:850;box-shadow:0 4px 0 #a7803b;display:flex;justify-content:center;align-items:center}.primary:active{transform:translateY(2px);box-shadow:0 2px 0 #a7803b}.secondary{min-width:44px;min-height:44px;padding:10px 14px;background:#244c63;border:1px solid #aac8d04d;border-radius:12px;font-size:13px;font-weight:650}.text-button{min-height:44px;min-width:44px;background:transparent;color:#b5d4dd;font-size:12px;padding:8px 16px}
+.timing-label{text-align:center;font-size:12px;font-weight:650;margin-bottom:11px}#gauge{position:relative;margin:0 5px 18px;height:16px;border-radius:8px;background:#425c70}#gauge i{position:absolute;left:40%;right:40%;height:100%;background:#e7c465;border-radius:6px}#needle{position:absolute;top:-5px;width:5px;height:26px;border-radius:3px;background:white;box-shadow:0 0 7px #fff8}
+#steering{text-align:center;user-select:none;padding:4px 0 0}#instruction{font-size:13px;font-weight:750;color:#f3d58b;margin-bottom:6px}.dragline{height:44px;border:1px solid #93c9d355;border-radius:14px;background:#b7d6dc0b;display:flex;align-items:center;justify-content:space-between;padding:0 24px;color:#cae1e7}.dragline span{font-size:24px}.dragline b{font-size:11px;letter-spacing:1px}#capacityHint{display:none}.experienced #steering .dragline{display:none}.experienced #instruction{padding:7px 0;font-size:12px;color:#bfd8df;margin:0}
+footer{display:flex;justify-content:space-between;gap:8px;margin-top:12px;font-size:9px;color:#86aab9}#app[data-phase=up] footer,#app[data-phase=down] footer,#app[data-phase=landing] footer{display:none}
+.overlay{position:absolute;inset:0;z-index:20;background:#051d32e8;display:flex;align-items:center;justify-content:center;padding:calc(var(--safe-top) + 18px) 20px calc(var(--safe-bottom) + 18px);backdrop-filter:blur(6px);touch-action:pan-y}.dialog{max-height:100%;overflow-y:auto;width:100%;background:#0d3148;border:1px solid #5f8a9c55;border-radius:22px;padding:22px}.eyebrow{font-size:10px;color:#efd389;letter-spacing:2px}.dialog h2{font-size:25px;margin:8px 0 20px}.dialog p{font-size:12px;color:#b7d0d8}.dialog .small{font-size:10px;color:#88afbd}.dialog .primary{margin-top:16px}.dialog .text-button{width:100%;margin-top:5px}.setting-row{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin:12px 0}#volume{width:100%;min-height:44px;accent-color:#efcb75;touch-action:auto}.check{justify-content:flex-start;gap:10px;min-height:44px;font-size:13px}.check input{width:22px;height:22px;accent-color:#efcb75}#settingsSound{width:100%}
+.title-screen{z-index:15;background:linear-gradient(#06243aaa,#06243a22 28%,#06243add 60%,#06243afa);backdrop-filter:none}.title-panel{width:100%;text-align:center;padding-top:90px}.title-panel h2{font-size:31px;line-height:1.45;letter-spacing:1px;margin:12px 0;color:#f8f4e6}.title-panel p{font-size:14px;color:#d1e4e7;margin:8px 0 45px}.title-panel .primary{margin-top:15px}.title-panel small{display:block;font-size:12px;margin-top:18px;color:#a5c7d1}#titleProgress{font-size:12px;color:#f0d393;margin-top:20px}.title-panel .text-button{margin-top:10px}
+#bookOverlay{z-index:21;padding-left:12px;padding-right:12px}.book-dialog{padding:18px}.dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.dialog-head h2{margin:0}.book-row{display:flex;align-items:center;min-height:68px;border-bottom:1px solid #6b97a133;gap:8px}.book-row canvas{width:86px;height:50px;position:static;flex:0 0 86px}.book-row strong{display:block;font-size:14px}.book-row small{display:block;font-size:11px;color:#b2cad4}.book-row.locked{opacity:.65}.book-dialog h3{font-size:16px;margin-top:24px}.history-row{font-size:11px;border-bottom:1px solid #537d8c33;padding:9px 0}
+@media(max-height:700px){h1{font-size:13px}.brand>span{font-size:7px}header{top:calc(var(--safe-top) + 6px)}#hud{top:calc(var(--safe-top) + 58px)}#mission{font-size:11px}#toast{font-size:14px}#dock{padding-top:10px}#resultMoney{font-size:29px}#resultTitle{font-size:14px}#resultDetail{font-size:11px}#upgrades button{min-height:64px;padding:7px 10px}.title-panel{padding-top:52px}.title-panel h2{font-size:25px}.title-panel p{margin-bottom:22px}.dialog{padding:16px}.dialog h2{font-size:22px;margin-bottom:10px}.setting-row{margin:6px 0}.dialog p{margin:6px 0}.dialog .primary{margin-top:10px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+#toast:empty{display:none}.on-title header,.on-title #hud,.on-title #mission,.on-title #dock,.on-title #toast{visibility:hidden}
+
+/* Shared requirement: safe controls on title, game, settings, collection and future overlays. */
+#app{--safe-left:env(safe-area-inset-left,0px);--safe-right:env(safe-area-inset-right,0px);min-height:0}
+header{left:calc(var(--safe-left) + 16px);right:calc(var(--safe-right) + 12px)}
+#hud{left:calc(var(--safe-left) + 16px);right:calc(var(--safe-right) + 16px)}
+#dock{padding-left:calc(var(--safe-left) + 16px);padding-right:calc(var(--safe-right) + 16px)}
+.overlay,#bookOverlay{padding-left:calc(var(--safe-left) + 12px);padding-right:calc(var(--safe-right) + 12px)}
+.title-panel{max-height:100%;overflow-y:auto}
+.dialog-head{position:sticky;top:-18px;background:#0d3148;z-index:1;padding:6px 0}
+
+/* Approved full title remains readable beside 44px controls. */
+header h1{white-space:normal;font-size:12px;line-height:1.2;overflow:visible;text-overflow:clip;letter-spacing:0}header .brand>span{font-size:8px}
+</style></head><body><main id="app">
 <canvas id="sea" aria-label="海。左右にドラッグして魚を狙う"></canvas>
 <header><div class="brand"><span>船釣りゲーム</span><h1>釣りいこ！マグロ大作戦</h1></div><button id="bookButton" aria-label="図鑑と釣果記録" hidden>図鑑</button><button id="sound" aria-label="音をオンにする">音 OFF</button><button id="pause" aria-label="設定と一時停止">⚙</button></header>
 <section id="hud"><div><small>所持金</small><strong id="money">¥0</strong></div><div><small>仕掛け</small><strong id="capacity">0 / 4 尾</strong></div><div><small>水深</small><strong id="depth">0 m</strong></div></section>
@@ -12,4 +44,327 @@
 <section id="titleOverlay" class="overlay title-screen" aria-label="タイトル"><div class="title-panel"><span class="eyebrow">TSURIIKO FISHING GAME</span><h2 id="titleName">釣りいこ！マグロ大作戦</h2><p>一投ずつ、まだ見ぬ大物へ。</p><div id="titleProgress"></div><button id="enter" class="primary">出航する →</button><small>左右にドラッグ。巻き上げは自動。</small><button id="titleSettings" class="text-button">設定</button></div></section>
 <section id="pauseOverlay" class="overlay" role="dialog" aria-modal="true" aria-label="設定と一時停止" hidden><div class="dialog"><span class="eyebrow">ひとやすみ</span><h2>設定</h2><label class="setting-row" for="volume">音量 <output id="volumeValue">65%</output></label><input id="volume" type="range" min="0" max="100" value="65" aria-label="音量"><button id="settingsSound" class="secondary">音をオンにする</button><label class="setting-row check"><input id="motion" type="checkbox"> 光と動きを控えめにする</label><p id="saveNotice">釣りの途中から再開できます</p><p class="small">この開発版は広告・購入なし</p><button id="resume" class="primary">釣りに戻る</button><button id="toTitle" class="text-button">タイトルへ</button></div></section>
 <section id="bookOverlay" class="overlay" role="dialog" aria-modal="true" aria-label="図鑑と釣果記録" hidden><div class="dialog book-dialog"><div class="dialog-head"><h2>釣果手帳</h2><button id="closeBook" class="secondary">閉じる</button></div><p id="bookSummary"></p><div id="bookGrid"></div><h3>最近の釣果</h3><div id="historyList"></div></div></section>
-</main><script type="module" src="game.js"></script></body></html>
+</main><script type="module">function resultSummary(state){
+ const best=[...state.caughtDetails].sort((a,b)=>b.weight-a.weight)[0];
+ return {best,isRecord:!!best&&state.newRecords.includes(best.type),isDiscovery:!!best&&state.newSpecies.includes(best.type)};
+}
+
+// App name approved 2026-10-09. Partner/channel artwork is still not bundled.
+const BRAND = {
+ title: '釣りいこ！マグロ大作戦',
+ candidateTitle: '釣りいこ！マグロ大作戦',
+ candidateStatus: '名称承認済み',
+ shortTitle: '釣りいこ！マグロ大作戦',
+ harborLine: '船釣りタイアップ試作',
+ accent: '#f3c760',
+ hullStripe: '#e67a4d',
+ boatName: '試作船',
+ partnerAssetsApproved: false
+};
+
+// Pure simulation and durable transactions. No browser, SDK, or wall clock dependency.
+const species = [
+ {id:'sardine',name:'イワシ',value:80,color:'#b4e2dc',size:16,min:2,weight:[.2,.6],shape:'slender'},
+ {id:'mackerel',name:'サバ',value:130,color:'#69c9b9',size:21,min:7,weight:[.8,1.7],shape:'striped'},
+ {id:'bonito',name:'カツオ',value:240,color:'#4e99c1',size:28,min:26,weight:[3,8],shape:'bonito'},
+ {id:'albacore',name:'ビンチョウ',value:420,color:'#a5c8ed',size:32,min:50,weight:[9,24],shape:'longfin'},
+ {id:'bigeye',name:'メバチ',value:720,color:'#967cb9',size:37,min:75,weight:[20,60],shape:'bigeye'},
+ {id:'yellowfin',name:'キハダ',value:1100,color:'#e3c658',size:40,min:99,weight:[28,75],shape:'sickle'},
+ {id:'bluefin',name:'クロマグロ',value:1800,color:'#617aab',size:48,min:136,weight:[65,145],shape:'barrel'}
+];
+const LIMITS={depthLevel:24,capLevel:5,history:20,fish:18};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const round5=n=>Math.round(n/5)*5;
+const phases=['ready','aim','down','up','landing','result'];
+class Game {
+ constructor(raw){
+  this.s={version:3,phase:'ready',money:0,depthLevel:0,capLevel:0,casts:0,totalFish:0,best:0,bestWeight:0,tuna:0,
+   muted:true,volume:.65,reducedMotion:false,seed:1927,elapsed:0,x:.5,targetX:.5,depth:0,castDepth:18,
+   fish:[],caught:[],caughtDetails:[],events:[],earnings:0,landing:0,spinner:0,flash:0,
+   lastClaimedId:0,pending:null,newRecords:[],newSpecies:[],history:[],book:species.map(()=>({count:0,best:0})),
+   entitlements:{adRemoval:false,source:'none'},firstUpgradeCast:0};
+  this.restored=raw?this.restore(raw):false;
+ }
+ get capacity(){return 4+this.s.capLevel;}
+ get maxDepth(){return 18+14*this.s.depthLevel;}
+ get gearStage(){return Math.min(4,Math.floor(this.s.depthLevel/3));}
+ cost(which){return which==='depth'?round5(300*1.47**this.s.depthLevel):round5(260*1.9**this.s.capLevel);}
+ nextGoal(){
+  const locked=species.find(sp=>sp.min>this.maxDepth*.96);
+  if(locked)return {name:locked.name,depth:locked.min,type:species.indexOf(locked),text:`次は ${locked.name} · ${locked.min}m`};
+  const target=[100,125,150,175,200,225].find(w=>w>this.s.bestWeight);
+  return {name:'クロマグロ',depth:this.maxDepth,type:6,text:target?`大物記録 ${target}kgを目指す`:'クロマグロの自己ベストを更新'};
+ }
+ rand(){this.s.seed=(Math.imul(this.s.seed,1664525)+1013904223)>>>0;return this.s.seed/4294967296;}
+ start(){
+  if(this.s.phase!=='ready'||this.s.pending)return false;
+  Object.assign(this.s,{phase:'aim',spinner:0,earnings:0,caught:[],caughtDetails:[],events:[],depth:0,x:.5,targetX:.5,landing:0,newRecords:[],newSpecies:[]});return true;
+ }
+ cast(){
+  if(this.s.phase!=='aim')return false;
+  const s=this.s,power=.9+.1*(1-Math.abs(Math.sin(s.spinner)));
+  s.castDepth=this.maxDepth*power;s.phase='down';s.casts++;s.fish=[];s.seed=1927+s.casts*943;
+  for(let i=0;i<LIMITS.fish;i++){
+   const depth=2+i*(s.castDepth*.96-2)/(LIMITS.fish-1);
+   let type=0;species.forEach((sp,n)=>{if(sp.min<=depth)type=n;});
+   if(type>=2&&i%3===0)type--;
+   let x=[.23,.5,.77][i%3]+(this.rand()-.5)*.12;if(type>=3)x=(i%2?.24:.76)+(this.rand()-.5)*.09;
+   const sp=species[type],growth=1+Math.max(0,s.castDepth-sp.min-12)*.003;
+   const weight=Math.round((sp.weight[0]+this.rand()*(sp.weight[1]-sp.weight[0]))*growth*10)/10;
+   const value=round5(sp.value*(.85+.3*(weight/sp.weight[1])));
+   const speed=(this.rand()>.5?1:-1)*(i%3===1?.006:.012+this.rand()*.009);
+   s.fish.push({id:i,type,x,depth,weight,value,speed,caught:false,phase:this.rand()*6.28});
+  }
+  s.events.push({type:'cast',power});return true;
+ }
+ move(x){if(Number.isFinite(x))this.s.targetX=clamp(x,.06,.94);}
+ upgrade(which){
+  if(!['ready','aim'].includes(this.s.phase)||this.s.pending||!['depth','capacity'].includes(which))return false;
+  const key=which==='depth'?'depthLevel':'capLevel';
+  if(this.s[key]>=LIMITS[key]||this.s.money<this.cost(which))return false;
+  this.s.money-=this.cost(which);this.s[key]++;
+  if(!this.s.firstUpgradeCast)this.s.firstUpgradeCast=this.s.casts;
+  this.s.events.push({type:'upgrade',which,stage:this.gearStage});return true;
+ }
+ step(dt){
+  dt=clamp(dt,0,.05);const s=this.s;s.elapsed+=dt;s.flash=Math.max(0,s.flash-dt);
+  if(s.phase==='aim')s.spinner+=dt*2.8;
+  if(['down','up'].includes(s.phase)){
+   s.x+=(s.targetX-s.x)*Math.min(1,dt*18);
+   for(const f of s.fish){if(!f.caught){f.x+=f.speed*dt;if(f.x<.08||f.x>.92)f.speed*=-1;}}
+   if(s.phase==='down'){
+    s.depth+=s.castDepth/1.15*dt;
+    if(s.depth>=s.castDepth){s.depth=s.castDepth;s.phase='up';s.events.push({type:'turn'});}
+   }else{
+    const full=s.caught.length>=this.capacity;
+    s.depth-=(full?s.castDepth:s.castDepth/6.5)*dt*(s.flash>0&&!full?.25:1);
+    if(!full)for(const f of s.fish){
+     if(f.caught)continue;const sp=species[f.type];
+     if(Math.abs(f.depth-s.depth)<s.castDepth*.032&&Math.abs(f.x-s.x)<.055+sp.size/1800){
+      f.caught=true;s.caught.push(f.type);s.caughtDetails.push({type:f.type,weight:f.weight,value:f.value});
+      s.events.push({type:'catch',fish:f.type,x:f.x,depth:f.depth});s.flash=f.type>=3?.28:.065;
+      if(s.caught.length>=this.capacity)break;
+     }
+    }
+    if(s.depth<=0){s.depth=0;s.phase='landing';s.landing=0;s.events.push({type:'land'});}
+   }
+  }else if(s.phase==='landing'){s.landing+=dt;if(s.landing>=2.4)this.finish();}
+ }
+ finish(){
+  const s=this.s;if(s.phase!=='landing'||s.pending||s.casts<=s.lastClaimedId)return false;
+  const fishValue=s.caughtDetails.reduce((n,f)=>n+f.value,0),support=fishValue===0?40:0;
+  s.earnings=fishValue+support;
+  const bests=s.book.map(x=>x.best);s.newRecords=[];s.newSpecies=[];
+  for(const f of s.caughtDetails){if(!s.book[f.type].count&&!s.newSpecies.includes(f.type))s.newSpecies.push(f.type);if(f.weight>bests[f.type]){bests[f.type]=f.weight;if(!s.newRecords.includes(f.type))s.newRecords.push(f.type);}}
+  s.pending={castId:s.casts,value:s.earnings,support,fish:s.caughtDetails.map(f=>({...f}))};
+  s.phase='result';s.events.push({type:'result',value:s.earnings});return true;
+ }
+ claim(){
+  const s=this.s,p=s.pending;
+  if(s.phase!=='result'||!p||p.castId<=s.lastClaimedId)return false;
+  s.money+=p.value;s.best=Math.max(s.best,p.value);s.totalFish+=p.fish.length;
+  for(const f of p.fish){const b=s.book[f.type];b.count++;b.best=Math.max(b.best,f.weight);s.bestWeight=Math.max(s.bestWeight,f.weight);if(f.type>=3)s.tuna++;}
+  s.history.unshift({castId:p.castId,value:p.value,fish:p.fish.map(f=>({...f})),depth:Math.round(s.castDepth),support:p.support});
+  s.history=s.history.slice(0,LIMITS.history);s.lastClaimedId=p.castId;s.pending=null;s.phase='ready';
+  s.events.push({type:'claimed',value:s.earnings});return true;
+ }
+ drain(){return this.s.events.splice(0);}
+ save(){return JSON.stringify({...this.s,events:[]});}
+ restore(raw){
+  try{
+   let d=typeof raw==='string'?JSON.parse(raw):raw;if(!d||typeof d!=='object')return false;
+   if(d.version===1){
+    const legacy=new Game();legacy.s.money=Number.isFinite(d.money)?Math.max(0,Math.min(d.money,1e9)):0;
+    legacy.s.depthLevel=Math.min(24,Math.max(0,Math.floor(d.depthLevel||0)));legacy.s.capLevel=Math.min(5,Math.max(0,Math.floor(d.capLevel||0)));
+    legacy.s.casts=Math.max(0,Math.floor(d.casts||0));legacy.s.lastClaimedId=legacy.s.casts;
+    legacy.s.muted=d.muted!==false;legacy.s.best=Math.max(0,Number(d.best)||0);this.s=legacy.s;return true;
+   }
+   if(d.version!==3||!phases.includes(d.phase))return false;
+   for(const k of ['money','depthLevel','capLevel','casts','totalFish','best','bestWeight','tuna','seed','elapsed','x','targetX','depth','castDepth','landing','spinner','flash','earnings','lastClaimedId'])if(!Number.isFinite(d[k])||d[k]<0)return false;
+   if(['depthLevel','capLevel','casts','lastClaimedId'].some(k=>!Number.isInteger(d[k])))return false;
+   if(!Array.isArray(d.newRecords)||!Array.isArray(d.newSpecies)||[...d.newRecords,...d.newSpecies].some(i=>!Number.isInteger(i)||!species[i]))return false;
+   if(d.depthLevel>24||d.capLevel>5||d.money>1e12||d.x>1||d.targetX>1||d.castDepth<1||d.castDepth>354||d.depth>d.castDepth+.1||d.lastClaimedId>d.casts)return false;
+   const validFish=f=>f&&Number.isInteger(f.type)&&species[f.type]&&Number.isFinite(f.weight)&&f.weight>0&&f.weight<1000&&Number.isFinite(f.value)&&f.value>=0&&f.value<1e6;
+   if(!Array.isArray(d.fish)||d.fish.length>18||d.fish.some(f=>!validFish(f)||![f.x,f.depth,f.speed,f.phase].every(Number.isFinite)))return false;
+   if(!Array.isArray(d.caught)||!Array.isArray(d.caughtDetails)||d.caught.length>4+d.capLevel||d.caughtDetails.length!==d.caught.length||d.caughtDetails.some((f,i)=>!validFish(f)||f.type!==d.caught[i]))return false;
+   if(!Array.isArray(d.book)||d.book.length!==species.length||d.book.some(b=>!Number.isFinite(b.count)||b.count<0||!Number.isFinite(b.best)||b.best<0))return false;
+   if(!Array.isArray(d.history)||d.history.length>20||d.history.some(h=>!Number.isFinite(h.value)||!Array.isArray(h.fish)||h.fish.some(f=>!validFish(f))))return false;
+   if(d.phase==='result'){
+    const p=d.pending;if(!p||p.castId!==d.casts||p.castId<=d.lastClaimedId||!Array.isArray(p.fish)||p.fish.length!==d.caughtDetails.length||p.fish.some((f,i)=>!validFish(f)||f.type!==d.caughtDetails[i].type||f.weight!==d.caughtDetails[i].weight||f.value!==d.caughtDetails[i].value)||p.value!==p.fish.reduce((n,f)=>n+f.value,0)+(p.fish.length?0:40))return false;
+   }else if(d.pending)return false;
+   this.s={...this.s,...d,events:[],volume:clamp(Number(d.volume)||0,0,1),muted:d.muted!==false,reducedMotion:!!d.reducedMotion,entitlements:{adRemoval:false,source:'none'}};return true;
+  }catch{return false;}
+ }
+}
+
+// A native preferences adapter can later implement this same storage contract.
+function createStorage(storage,key='tsuriiko.game.v3'){
+ return {
+  load(){try{return storage.getItem(key)||storage.getItem(key+'.backup');}catch{return null;}},
+  backup(){try{return storage.getItem(key+'.backup');}catch{return null;}},
+  write(payload){try{const previous=storage.getItem(key);if(previous)storage.setItem(key+'.backup',previous);storage.setItem(key,payload);return true;}catch{return false;}},
+  key
+ };
+}
+const AD_POLICY=Object.freeze({interstitialPlacement:'after_claim_only',neverInterrupt:['aim','down','up','landing','result'],removalScope:'all_forced_ads',optionalRewardForOwners:'same_daily_limit_without_video'});
+// No SDK, network, product IDs, purchase button, or simulated paid entitlement.
+function createMonetizationPort(){return Object.freeze({
+ async getEntitlement(){return {adRemoval:false,source:'none',connected:false};},
+ async restorePurchases(){return {status:'not_connected'};},
+ async showInterstitial(){return {status:'not_connected'};},
+ async showRewarded(){return {status:'not_connected',rewardGranted:false};}
+ });}
+
+const $=s=>document.querySelector(s);
+let nativeStorage;try{nativeStorage=localStorage;}catch{nativeStorage=null;}
+const store=window.__nativeHost?.storage||createStorage(nativeStorage),legacy=()=>{try{return nativeStorage?.getItem('kuroshio.prototype.v1');}catch{return null;}};
+let game=new Game(store.load());if(!game.restored&&store.backup())game=new Game(store.backup());if(!game.restored&&legacy())game=new Game(legacy());
+const monetization=createMonetizationPort();
+document.title=BRAND.title;document.documentElement.style.setProperty('--accent',BRAND.accent);$('h1').textContent=BRAND.shortTitle;$('#titleName').textContent=BRAND.shortTitle;
+const canvas=$('#sea'),ctx=canvas.getContext('2d',{alpha:false});
+let W=390,H=844,dpr=1,safeTop=0,safeBottom=0,last=0,paused=false,titleOpen=true,bookOpen=false,hidden=false,pointer=false,pointerX=0,audio=null,fx=[],toastUntil=0,lastSave=0,lastUI=0,frameTimes=[],saveOK=true,bookRevision='';
+let suspensionGeneration=0;
+let soundEnabled=!game.s.muted;
+const prefersReduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let reduced=prefersReduced||game.s.reducedMotion;
+function resize(){let r=$('#app').getBoundingClientRect(),style=getComputedStyle($('#app'));W=r.width;H=r.height;safeTop=parseFloat(style.paddingTop)||0;safeBottom=parseFloat(style.paddingBottom)||0;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);$('#app').style.setProperty('--waterline',((H<700?163:183)+safeTop)+'px');draw(game.s.elapsed);}
+new ResizeObserver(resize).observe($('#app'));
+async function save(){saveOK=await store.write(game.save());$('#saveStatus').textContent=saveOK?'自動保存':'この端末では保存できません';$('#saveNotice').textContent=saveOK?'釣りの途中から再開できます':'保存できないため、この画面を閉じると進捗を失う場合があります';return saveOK;}
+function unlock(){if(!soundEnabled)return;if(!audio){const AC=window.AudioContext||window.webkitAudioContext;if(AC)audio=new AC();}if(audio&&audio.state!=='running'&&audio.state!=='closed'&&!paused&&!titleOpen&&!bookOpen)audio.resume().catch(()=>{});}
+function note(f=440,d=.1,v=.045){if(!soundEnabled||game.s.volume<=0||!audio||audio.state!=='running')return;const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.setValueAtTime(f,audio.currentTime);o.frequency.exponentialRampToValueAtTime(f*1.3,audio.currentTime+d);g.gain.setValueAtTime(v*game.s.volume,audio.currentTime);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+d);o.connect(g).connect(audio.destination);o.start();o.stop(audio.currentTime+d);}
+function toast(text){$('#toast').textContent=text;$('#toast').style.opacity=1;toastUntil=game.s.elapsed+1.05;}
+function setPaused(v){paused=v;pointer=false;save();last=0;if(v)audio?.suspend().catch(()=>{});else unlock();sync();}
+function toggleSound(){soundEnabled=!soundEnabled;game.s.muted=!soundEnabled;if(!soundEnabled)audio?.suspend().catch(()=>{});else unlock();note(540);save();sync();}
+$('#pause').onclick=()=>setPaused(true);$('#titleSettings').onclick=()=>setPaused(true);$('#resume').onclick=()=>setPaused(false);
+$('#sound').onclick=toggleSound;$('#settingsSound').onclick=toggleSound;
+$('#volume').oninput=e=>{game.s.volume=Number(e.target.value)/100;$('#volumeValue').value=Math.round(game.s.volume*100)+'%';save();};
+$('#motion').onchange=e=>{game.s.reducedMotion=e.target.checked;reduced=prefersReduced||game.s.reducedMotion;save();draw(game.s.elapsed);};
+$('#enter').onclick=()=>{titleOpen=false;paused=false;if(game.s.phase==='ready')game.start();unlock();save();sync();last=0;};
+$('#toTitle').onclick=()=>{paused=false;titleOpen=true;pointer=false;audio?.suspend().catch(()=>{});save();sync();};
+$('#cast').onclick=()=>{unlock();game.start();save();sync();};
+$('#drop').onclick=()=>{unlock();game.cast();save();sync();};
+$('#claim').onclick=async()=>{if(paused)return;const generation=suspensionGeneration,before=game.save();if(!game.claim())return;paused=true;$('#claim').disabled=true;const ok=await save();if(ok){note(880,.25);game.start();await save();}else{game=new Game(before);}paused=suspensionGeneration!==generation;$('#claim').disabled=false;sync();};
+for(const [id,which] of [['upgradeDepth','depth'],['upgradeCapacity','capacity']])$('#'+id).onclick=()=>{unlock();if(game.upgrade(which)){note(660,.2);toast(which==='depth'?'道具を強化！ '+game.maxDepth+'mへ':'仕掛けを強化！');save();sync();}};
+$('#bookButton').onclick=()=>{bookOpen=true;pointer=false;audio?.suspend().catch(()=>{});renderBook();sync();};
+$('#closeBook').onclick=()=>{bookOpen=false;unlock();sync();};
+function renderBook(){
+ $('#bookSummary').textContent=`${game.s.book.filter(b=>b.count).length} / ${species.length}種 · 最大 ${game.s.bestWeight.toFixed(1)}kg`;
+ $('#bookGrid').replaceChildren();species.forEach((sp,i)=>{const b=game.s.book[i],row=document.createElement('div');row.className='book-row'+(b.count?'':' locked');const icon=document.createElement('canvas');icon.width=150;icon.height=86;icon.setAttribute('aria-label',sp.name+'のシルエット');const info=document.createElement('div'),name=document.createElement('strong'),meta=document.createElement('small');name.textContent=sp.name;meta.textContent=b.count?`${b.count}尾 · 最大 ${b.best.toFixed(1)}kg`:`${sp.min}mから出会える`;info.append(name,meta);row.append(icon,info);$('#bookGrid').append(row);drawBookFish(icon,i,!!b.count);});
+ $('#historyList').replaceChildren();for(const h of game.s.history.slice(0,10)){const row=document.createElement('div');row.className='history-row';const best=[...h.fish].sort((a,b)=>b.weight-a.weight)[0];row.textContent=`第${h.castId}投 · ¥${h.value.toLocaleString()} · ${best?species[best.type].name+' '+best.weight.toFixed(1)+'kg':'調査協力金'}`;$('#historyList').append(row);}
+}
+function aim(e){let r=canvas.getBoundingClientRect();game.move(game.s.targetX+(e.clientX-pointerX)/r.width);pointerX=e.clientX;}
+$('#app').addEventListener('pointerdown',e=>{if(paused||titleOpen||bookOpen||e.target.closest('button,input'))return;if(['up','down'].includes(game.s.phase)){pointer=true;pointerX=e.clientX;$('#app').setPointerCapture(e.pointerId);unlock();}});
+$('#app').addEventListener('pointermove',e=>{if(pointer&&!paused&&!titleOpen&&!bookOpen)aim(e);});
+for(const event of ['pointerup','pointercancel','lostpointercapture'])$('#app').addEventListener(event,()=>pointer=false);
+document.addEventListener('keydown',e=>{if(e.code==='Escape'){if(bookOpen){bookOpen=false;sync();}else setPaused(!paused);return;}if(paused||titleOpen||bookOpen)return;if(['ArrowLeft','ArrowRight','Space'].includes(e.code))e.preventDefault();if(e.code==='ArrowLeft')game.move(game.s.targetX-.12);if(e.code==='ArrowRight')game.move(game.s.targetX+.12);if(e.code==='Space'){unlock();if(game.s.phase==='aim')game.cast();else if(game.s.phase==='result'){$('#claim').click();}else game.start();save();sync();}});
+document.addEventListener('visibilitychange',()=>{hidden=document.hidden;if(hidden){if(['down','up','aim','landing'].includes(game.s.phase)&&!titleOpen)setPaused(true);save();audio?.suspend().catch(()=>{});}last=0;});
+window.addEventListener('pagehide',()=>{audio?.suspend().catch(()=>{});save();});
+function background(){suspensionGeneration++;pointer=false;hidden=true;paused=true;last=0;audio?.suspend().catch(()=>{});save();sync();}
+// Resume remains paused and silent until an explicit user gesture.
+window.addEventListener('nativeAudioInterrupted',()=>{background();hidden=document.hidden;});
+function foreground(){hidden=document.hidden;last=0;sync();}
+if(window.__nativeHost){window.__nativeHost.App.addListener('appStateChange',({isActive})=>isActive?foreground():background());window.__nativeHost.App.addListener('pause',background);window.__nativeHost.App.addListener('resume',foreground);}
+
+function sync(){
+ const s=game.s,active=['down','up','landing'].includes(s.phase),ready=s.phase==='ready',result=s.phase==='result',aiming=s.phase==='aim';
+ $('#money').textContent='¥'+s.money.toLocaleString();$('#capacity').textContent=`${s.caught.length} / ${game.capacity} 尾`;$('#depth').textContent=active?Math.ceil(s.depth)+' m':game.maxDepth+' m';
+ $('#sound').textContent=soundEnabled?'音 ON':'音 OFF';$('#sound').setAttribute('aria-label',soundEnabled?'音をオフにする':'音をオンにする');$('#settingsSound').textContent=soundEnabled?'音をオフにする':'音をオンにする';
+ $('#volume').value=Math.round(s.volume*100);$('#volumeValue').value=Math.round(s.volume*100)+'%';$('#motion').checked=s.reducedMotion;
+ $('#result').hidden=!result;$('#upgrades').hidden=!(aiming&&s.casts>0);$('#cast').hidden=!ready;$('#claim').hidden=!result;$('#timing').hidden=!aiming;$('#steering').hidden=!active;
+ $('#upgradeCapacity').hidden=s.depthLevel<1;$('#bookButton').hidden=!s.totalFish;
+ $('#app').classList.toggle('on-title',titleOpen);$('#app').dataset.phase=s.phase;$('#app').classList.toggle('experienced',s.casts>1);
+ $('#mission').textContent=game.nextGoal().text;
+ if(result){const {best,isRecord,isDiscovery}=resultSummary(s);$('#resultTitle').textContent=best?species[best.type].name+'、水揚げ！':'次の一投につなげよう';$('#resultMoney').textContent='+ ¥'+s.earnings.toLocaleString();$('#resultDetail').textContent=best?`${best.weight.toFixed(1)}kg · 全${s.caught.length}尾の釣果`:'調査協力金 ¥40';$('#recordBadge').textContent=isDiscovery?'初めての魚を発見！':isRecord?'最大重量を更新！':'';}
+ for(const [id,which] of [['upgradeDepth','depth'],['upgradeCapacity','capacity']]){const el=$('#'+id),level=which==='depth'?s.depthLevel:s.capLevel,max=which==='depth'?LIMITS.depthLevel:LIMITS.capLevel;el.disabled=s.money<game.cost(which)||level>=max;el.querySelector('b').textContent=level>=max?'最大強化':'¥'+game.cost(which).toLocaleString();el.querySelector('small').textContent=which==='depth'?`${game.maxDepth}m → ${game.maxDepth+14}m`:`${game.capacity}尾 → ${game.capacity+1}尾`;}
+ $('#instruction').textContent=s.phase==='down'?'投下中':s.phase==='landing'?'水揚げ・計測中':s.caught.length===game.capacity?'満杯 → 船へ':s.casts>1?'‹ 左右にスライド ›':'海を左右にドラッグして狙う';
+ $('#needle').style.left=`${50+Math.sin(s.spinner)*46}%`;
+ $('#titleOverlay').hidden=!titleOpen;$('#pauseOverlay').hidden=!paused;$('#bookOverlay').hidden=!bookOpen;
+ $('#enter').textContent=s.phase==='result'?'釣果を確認する →':s.casts?'続きから →':'出航する →';$('#titleProgress').textContent=s.casts?`${game.maxDepth}m · ${s.book.filter(b=>b.count).length}種 · 所持金 ¥${s.money.toLocaleString()}`:'浅場から、マグロの海へ';
+}
+
+function path(points,color){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();ctx.fillStyle=color;ctx.fill();}
+function ellipse(x,y,rx,ry,color){ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();}
+function line(points,color,width=2){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.stroke();}
+function renderFish(c,x,y,type,t,scale=1,dir=1,glow=false,known=true){
+ if(reduced)t=0;const sp=species[type],z=sp.size,shape=sp.shape;
+ const h={slender:.2,striped:.28,bonito:.38,longfin:.30,bigeye:.44,sickle:.34,barrel:.49}[shape];
+ c.save();c.translate(x,y);c.scale(dir*scale,scale);c.rotate(Math.sin(t*4)*.035);
+ const fill=known?sp.color:'#365a70',fin=known?(type===5?'#ffda58':type===3?'#d9e6ef':'#397d9d'):'#365a70';
+ function polygon(p,col){c.beginPath();p.forEach((q,i)=>i?c.lineTo(...q):c.moveTo(...q));c.closePath();c.fillStyle=col;c.fill();}
+ function oval(x,y,rx,ry,col){c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);c.fillStyle=col;c.fill();}
+ if(glow){c.shadowColor=type===5?'#ffd35f':'#a9d9ee';c.shadowBlur=reduced?4:13;}
+ const wag=Math.sin(t*7)*z*.08,tail=type>=3?.64:.43;
+ polygon([[-z*.58,0],[-z*1.05,-z*tail+wag],[-z*.84,0],[-z*1.05,z*tail+wag]],fin);
+ c.beginPath();c.moveTo(z*.9,0);c.bezierCurveTo(z*.47,-z*h*1.5,-z*.45,-z*h*1.2,-z*.65,0);c.bezierCurveTo(-z*.38,z*h*1.2,z*.43,z*h*1.4,z*.9,0);c.fillStyle=fill;c.fill();c.shadowBlur=0;
+ if(known){c.beginPath();c.moveTo(-z*.58,z*.025);c.quadraticCurveTo(z*.12,z*h*1.12,z*.84,z*.015);c.quadraticCurveTo(z*.16,z*h*.37,-z*.58,z*.025);c.fillStyle='#dfede2';c.fill();}
+ if(shape==='sickle'){
+  c.beginPath();c.moveTo(-z*.1,-z*.27);c.quadraticCurveTo(z*.25,-z*1.15,z*.60,-z*.92);c.quadraticCurveTo(z*.18,-z*.56,z*.35,-z*.29);c.fillStyle=fin;c.fill();
+  polygon([[z*.02,z*.13],[z*.49,z*.89],[z*.31,z*.2]],fin);
+ }else{polygon([[-z*.15,-z*h*.8],[z*.04,-z*(shape==='barrel'?.72:.58)],[z*.35,-z*h*.73]],fin);}
+ if(shape==='longfin')polygon([[z*.22,-z*.01],[-z*.62,z*.83],[-z*.22,z*.23]],fin);
+ else polygon([[z*.2,0],[-z*.20,z*(shape==='bigeye'?.55:.4)],[z*.34,z*.14]],fin);
+ if(known&&(shape==='bonito'||shape==='striped')){for(let i=0;i<5;i++){c.beginPath();c.moveTo(-z*.42+i*z*.16,shape==='bonito'?z*.1:-z*h*.7);c.lineTo(-z*.28+i*z*.16,shape==='bonito'?z*.31:-z*.03);c.strokeStyle='#205578';c.lineWidth=1.6;c.stroke();}}
+ if(type>=3)for(let i=0;i<4;i++)polygon([[-z*.33-i*z*.07,-z*.15],[-z*.39-i*z*.07,-z*.28],[-z*.44-i*z*.07,-z*.13]],fin);
+ let eye=shape==='bigeye'?z*.13:Math.max(2.5,z*.06);oval(z*.59,-z*.06,eye,eye,known?'#fff5d8':'#365a70');if(known)oval(z*.62,-z*.06,eye*.55,eye*.65,'#0a2b40');
+ c.restore();
+}
+function fish(...args){renderFish(ctx,...args);}
+function drawBookFish(canvas,type,known){const c=canvas.getContext('2d');c.clearRect(0,0,canvas.width,canvas.height);renderFish(c,78,45,type,0,Math.min(1.5,58/species[type].size),1,false,known);}
+
+const surface=()=>(H<700?163:183)+safeTop;
+const waterBottom=()=>H-safeBottom-(game.s.casts>1?62:90);
+function fishY(depth){return surface()+24+(waterBottom()-surface()-35)*depth/game.s.castDepth;}
+function boat(t){if(reduced)t=0;let y=surface()-12,x=W*.5;ctx.save();ctx.translate(x,y+Math.sin(t*1.7)*2);ctx.scale(.85,.85);ctx.rotate(Math.sin(t*1.3)*.012);ellipse(0,20,88,7,'#103f5577');path([[-80,-6],[80,-6],[60,20],[-59,20]],'#e9e5cb');path([[-76,1],[74,1],[68,10],[-67,10]],[BRAND.hullStripe,'#389d9a','#3c73a5','#ba9553','#a181b2'][game.gearStage]);path([[-20,-10],[-18,-48],[24,-48],[42,-10]],'#f5ecda');path([[-11,-40],[17,-40],[27,-20],[-11,-20]],'#407d92');line([[3,-40],[3,-20]],'#d4dfd7',3);path([[-27,-47],[26,-47],[23,-55],[-22,-55]],'#163f53');line([[-54,-8],[-54,-22],[-30,-22]],'#eee4c3',3);line([[46,-11],[46,-46]],'#e8d9ba',3);path([[46,-44],[66,-40],[46,-34]],'#e77d51');ellipse(-36,-30,7,8,'#dca679');path([[-44,-25],[-33,-24],[-26,-8],[-47,-8]],'#344b62');ellipse(-36,-37,11,3,'#f0cc77');path([[-44,-37],[-41,-44],[-30,-44],[-27,-37]],'#edc477');if(game.gearStage>=1){ellipse(-23,-14,5,5,'#c6e3ea');line([[-62,-8],[-62,-29]],'#b6d6d9',3);}if(game.gearStage>=2){path([[-33,-53],[34,-53],[26,-61],[-28,-61]],'#8cb8c8');}if(game.gearStage>=3){line([[-45,-8],[-90,-48]],'#d8c58c',2);line([[48,-8],[92,-48]],'#d8c58c',2);}let tension=game.s.caught.some(i=>i>=3)&&game.s.phase==='up';let bend=game.s.flash>0?28:tension?14+Math.sin(t*8)*4:0;ctx.beginPath();ctx.moveTo(-29,-20);ctx.quadraticCurveTo(9,-91,49,-33+bend);ctx.strokeStyle=game.s.depthLevel?'#cee4e9':'#d9bb78';ctx.lineWidth=2.6+Math.min(1,game.s.capLevel*.2);ctx.stroke();line([[-35,-18],[-22,-22]],'#dca679',4);ctx.restore();}
+function draw(t){ctx.setTransform(dpr,0,0,dpr,0,0);let sky=ctx.createLinearGradient(0,0,0,surface());sky.addColorStop(0,'#082e48');sky.addColorStop(.6,'#306274');sky.addColorStop(1,'#e5b781');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);ellipse(W*.83,surface()-50,24,24,'#f4ce8a');path([[0,surface()-22],[W*.12,surface()-47],[W*.26,surface()-28],[W*.41,surface()-54],[W*.6,surface()-18],[W,surface()-28],[W,surface()+15],[0,surface()+15]],'#416b75');path([[0,surface()-5],[W*.18,surface()-22],[W*.34,surface()-12],[W*.55,surface()-24],[W,surface()-7],[W,surface()+15],[0,surface()+15]],'#285865');let g=ctx.createLinearGradient(0,surface(),0,H);g.addColorStop(0,'#238da0');g.addColorStop(.35,'#126178');g.addColorStop(1,'#08293f');ctx.fillStyle=g;ctx.fillRect(0,surface(),W,H);ctx.save();ctx.globalAlpha=.05;for(let i=0;i<5;i++)path([[i*110-50+Math.sin(t*.2)*10,surface()],[i*110+10,surface()],[i*110+190,H],[i*110+80,H]],'#eafbee');ctx.restore();for(let i=0;i<7;i++){let y=surface()+i*7;ctx.beginPath();for(let x=-10;x<W+20;x+=5){let yy=y+Math.sin(x*.025+t*1.5+i)*2; x===-10?ctx.moveTo(x,yy):ctx.lineTo(x,yy);}ctx.strokeStyle=i<2?'#9bddcfaa':'#4eb8b533';ctx.lineWidth=2;ctx.stroke();}boat(t);
+ const active=['down','up'].includes(game.s.phase);let s=game.s;
+ if(active){
+  for(let m=10;m<s.castDepth;m+=10){let y=fishY(m);line([[W-27,y],[W-21,y]],'#b4dfdf55',1);ctx.fillStyle='#d0eeeb88';ctx.font='10px system-ui';ctx.fillText(m+'m',W-21,y+3);}
+  // Value is communicated by silhouette and colour; no per-fish price labels.
+  for(let f of s.fish){if(!f.caught)fish(f.x*W,fishY(f.depth),f.type,t+f.phase,H<700?.86:1,f.speed>0?1:-1,f.type>=3);}
+  let hx=s.x*W,hy=fishY(s.depth);
+  ctx.beginPath();ctx.moveTo(W*.5+42,surface()-40);ctx.quadraticCurveTo((W*.5+hx)/2,surface()+40,hx,hy);ctx.strokeStyle='#fff5c3cc';ctx.lineWidth=s.caught.some(i=>i>=3)?2.1:1.5;ctx.stroke();
+  if(s.phase==='up'){ctx.setLineDash([3,6]);ellipse(hx,hy,21,21,'#f4dc8615');ctx.beginPath();ctx.arc(hx,hy,21,0,Math.PI*2);ctx.strokeStyle='#f3de8677';ctx.stroke();ctx.setLineDash([]);}
+  ctx.beginPath();ctx.moveTo(hx,hy-7);ctx.lineTo(hx,hy+6);ctx.quadraticCurveTo(hx+12,hy+14,hx+12,hy+2);ctx.strokeStyle='#fff0a6';ctx.lineWidth=3;ctx.stroke();
+  let catchOrder=s.caught.map((type,i)=>({type,i})).sort((a,b)=>a.type-b.type);
+  for(let {type,i} of catchOrder){let big=type>=3;let scale=(big?1.04:.75)*(H<700?.86:1);let offset=(i%2?1:-1)*(big?22:17);let x=Math.max(species[type].size*1.1,Math.min(W-species[type].size*1.1,hx+offset));let y=hy+(big?-26:18+i*10);fish(x,y,type,t+i,scale,i%2?1:-1,big);}
+ }else if(s.phase==='landing'){
+  let best=[...s.caughtDetails].sort((a,b)=>b.weight-a.weight)[0];
+  for(let i=0;i<s.caught.length;i++){let p=Math.max(0,Math.min(1,(s.landing-i*.1)/.65));if(p<1){let x=s.x*W+(W*.5-s.x*W)*p,y=surface()+38-100*Math.sin(p*Math.PI);fish(x,y,s.caught[i],t+i,s.caught[i]>=3?1.04:.75,1,true);}}
+  if(best&&s.landing>.65&&s.landing<1.05){fish(W*.5,surface()-17,best.type,t,1.1,1,true);}
+  if(best&&s.landing>=1.05)showCatch(best,t,Math.min(1,(s.landing-1.05)*3),'船上計測');
+ }else if(s.phase==='result'&&s.caughtDetails.length){showCatch([...s.caughtDetails].sort((a,b)=>b.weight-a.weight)[0],t,1,resultSummary(s).isRecord?'重量記録を更新！':'今回の大物');}
+ else{for(let i=0;i<5;i++){let x=((i*83+t*(i%2?8:-5))%(W+100)+W+100)%(W+100)-50;fish(x,surface()+65+i*35,i===4?Math.max(0,species.findLastIndex(sp=>sp.min<=game.maxDepth*.86)):i%2,t+i,i===4?1:.7,i%2?1:-1,i===4);}}
+ for(let i=0;i<18;i++){let x=(i*79+Math.sin(t*.7+i)*6)%W,y=surface()+((i*47-t*12)%(H-surface())+(H-surface()))%(H-surface());ctx.strokeStyle='#a7e4de25';ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,1.5+i%3,0,6.28);ctx.stroke();}
+ for(let p of fx){let age=t-p.at;if(age>1)continue;ctx.globalAlpha=1-age;let x=p.x+Math.cos(p.a)*age*60,y=p.y+Math.sin(p.a)*age*50+age*age*25;ellipse(x,y,p.big?3:2,p.big?3:2,p.big?'#ffdd6a':'#e8ffff');}ctx.globalAlpha=1;fx=fx.filter(p=>t-p.at<1);
+}
+function showCatch(best,t,alpha,label){
+ let top=surface()+28,limit=H-safeBottom-(game.s.phase==='result'?185:225),space=Math.max(80,limit-top);
+ let cy=top+Math.max(48,space*.43),scale=H<700?1.65:2.2;
+ ctx.save();ctx.globalAlpha=alpha;ellipse(W*.5,cy+15,Math.min(130,W*.35),Math.min(60,space*.36),'#0b3048b8');
+ for(let i=0;i<8;i++){let a=i/8*Math.PI*2+t*.12;line([[W*.5+Math.cos(a)*75,cy+Math.sin(a)*35],[W*.5+Math.cos(a)*95,cy+Math.sin(a)*48]],'#f4d58844',2);}
+ fish(W*.5,cy,best.type,t*.45,scale,1,true);ctx.textAlign='center';ctx.fillStyle='#a8d1d7';ctx.font='11px system-ui';ctx.fillText(label,W*.5,top+8);
+ if(game.s.phase==='landing'){ctx.fillStyle='#fff0ba';ctx.font='bold 20px system-ui';ctx.fillText(species[best.type].name,W*.5,cy+55);ctx.font='bold 26px system-ui';ctx.fillText(best.weight.toFixed(1)+' kg',W*.5,cy+85);ctx.font='14px system-ui';ctx.fillStyle='#f4d589';ctx.fillText('この1尾 ¥'+best.value.toLocaleString(),W*.5,cy+111);}
+ else{ctx.font='bold 16px system-ui';ctx.fillStyle='#ffe098';ctx.fillText(best.weight.toFixed(1)+' kg',W*.5,cy+49);}
+ ctx.restore();
+}
+
+function events(){for(const e of game.drain()){
+ if(e.type==='catch'){
+  note(e.fish>=3?720:440+e.fish*60,.12);if(e.fish>=2)toast(species[e.fish].name+' HIT！');
+  for(let i=0;i<(reduced?4:14);i++)fx.push({x:e.x*W,y:fishY(e.depth),a:i/14*6.28,at:game.s.elapsed,big:e.fish>=3});save();
+ }
+ if(e.type==='turn'&&game.s.casts===1)toast('海を左右にドラッグ');
+ if(e.type==='cast')note(280,.15);
+ if(e.type==='land'){note(570,.2);for(let i=0;i<(reduced?6:24);i++)fx.push({x:W*.5,y:surface()+6,a:Math.PI+i/24*Math.PI,at:game.s.elapsed,big:false});}
+ if(e.type==='result'){note(780,.2);save();}
+ if(e.type==='cast'&&e.power>.985)toast('絶好の投下！');
+}}
+function frame(now){const rawDt=last?(now-last)/1000:0,dt=Math.min(rawDt,.05);last=now;
+ if(!paused&&!hidden&&!titleOpen&&!bookOpen){game.step(dt);events();if(game.s.elapsed>toastUntil)$('#toast').style.opacity=0;if(game.s.elapsed-lastSave>1&&['down','up','landing'].includes(game.s.phase)){save();lastSave=game.s.elapsed;}if(now-lastUI>90){sync();lastUI=now;}if(game.s.phase==='aim')$('#needle').style.left=`${50+Math.sin(game.s.spinner)*46}%`;draw(game.s.elapsed);if(rawDt>0){frameTimes.push(rawDt*1000);if(frameTimes.length>600)frameTimes.shift();}}
+ 
+ requestAnimationFrame(frame);
+}
+// Diagnostics are read-only. Experience/balance tests must not use fish coordinates.
+window.__diagnostics={snapshot:()=>JSON.parse(game.save()),metrics:()=>({canvas:[canvas.width,canvas.height],css:[W,H],dpr,safeTop,safeBottom,waterArea:waterBottom()-surface(),meanFrameMs:frameTimes.reduce((a,b)=>a+b,0)/(frameTimes.length||1),paused,titleOpen,bookOpen,audioState:audio?.state||'not-created',soundEnabled,saveOK}),monetization:()=>monetization.getEntitlement()};
+resize();sync();requestAnimationFrame(frame);
+</script></body></html>

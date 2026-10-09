@@ -1,6 +1,0 @@
-{
-  "appId": "jp.tsuriiko.maguro",
-  "appName": "釣りいこ！マグロ大作戦",
-  "webDir": "www",
-  "ios": {"contentInset": "never", "backgroundColor": "#061b2a", "preferredContentMode": "mobile"}
-}
