@@ -14,7 +14,7 @@ export function drawFish(c,x,y,type,t,scale,dir,known,species,reduced){
  const dark=['#14627b','#164a69','#154563','#1a4368','#233c62','#19456b','#173552'][type];
  const fin=type===5?'#ecc448':type===3?'#739aaf':'#356b86';
  c.save();c.translate(x,y);c.rotate(Math.sin(t*3.4)*.025);c.scale(dir*z,z);
- const body=p=>{p.moveTo(.98,.012);p.bezierCurveTo(.80,-h*.78,.36,-h*1.22,-.10,-h*.97);p.bezierCurveTo(-.39,-h*.86,-.60,-h*.30,-.75,-.085);p.lineTo(-.75,.085);p.bezierCurveTo(-.42,h*.50,-.21,h*1.03,.16,h);p.bezierCurveTo(.61,h*.91,.87,h*.44,.98,.012);p.closePath();};
+ const body=p=>{if(type===0){p.moveTo(1,.005);p.bezierCurveTo(.65,-.19,-.29,-.23,-.76,-.045);p.lineTo(-.76,.045);p.bezierCurveTo(-.25,.18,.65,.23,1,.005);p.closePath();return;}if(type===6){p.moveTo(.95,.035);p.bezierCurveTo(.76,-.42,.16,-.59,-.30,-.34);p.quadraticCurveTo(-.6,-.17,-.75,-.07);p.lineTo(-.75,.07);p.bezierCurveTo(-.27,.39,.36,.57,.81,.24);p.lineTo(.95,.035);p.closePath();return;}p.moveTo(.98,.012);p.bezierCurveTo(.80,-h*.78,.36,-h*1.22,-.10,-h*.97);p.bezierCurveTo(-.39,-h*.86,-.60,-h*.30,-.75,-.085);p.lineTo(-.75,.085);p.bezierCurveTo(-.42,h*.50,-.21,h*1.03,.16,h);p.bezierCurveTo(.61,h*.91,.87,h*.44,.98,.012);p.closePath();};
  // Caudal peduncle and flexible crescent tail, rather than a triangular cutout.
  c.save();c.translate(-.72,0);c.rotate(Math.sin(t*7)*.11);
  shape(c,p=>{p.moveTo(.06,-.07);p.bezierCurveTo(-.16,-.13,-.29,-.34,-.45,-.48);p.bezierCurveTo(-.43,-.27,-.28,-.07,-.22,0);p.bezierCurveTo(-.31,.13,-.41,.29,-.45,.47);p.bezierCurveTo(-.22,.30,-.08,.14,.06,.075);p.closePath();},known?grad(c,0,-.45,0,.45,[[0,type===5?'#fff090':'#78a8b9'],[.48,fin],[1,dark]]):'#43657a',known?dark:null,.018);c.restore();
@@ -31,6 +31,7 @@ export function drawFish(c,x,y,type,t,scale,dir,known,species,reduced){
   // Lit shoulder and a silver flank: volume stays visible at mobile size.
   const sheen=c.createRadialGradient(.28,-h*.30,.02,.23,-h*.15,.72);sheen.addColorStop(0,'#ffffff7a');sheen.addColorStop(1,'#ffffff00');c.fillStyle=sheen;c.fillRect(-.7,-h,1.8,h*2);
   shape(c,p=>{p.moveTo(-.58,.016);p.bezierCurveTo(-.13,-.008,.48,.04,.85,.00);},null,type===5?'#e9cd58':'#cce9e7',.019);
+  if(type===0)for(let i=0;i<7;i++)oval(c,-.43+i*.14,-.035,.021,.021,'#264d64');
   if(kind==='striped')for(let i=0;i<7;i++){const xx=-.37+i*.115;shape(c,p=>{p.moveTo(xx,-h*.8);p.bezierCurveTo(xx+.11,-h*.71,xx-.035,-h*.44,xx+.085,-h*.22);},null,'#163f5fb0',.028);}
   if(kind==='bonito')for(let i=0;i<4;i++){const yy=.06+i*.063;shape(c,p=>{p.moveTo(-.41,yy);p.bezierCurveTo(-.08,yy+.05,.18,yy+.08,.46,yy-.03);},null,'#2b556ab8',.025);}
   c.restore();
@@ -44,7 +45,7 @@ export function drawFish(c,x,y,type,t,scale,dir,known,species,reduced){
  c.save();c.translate(.40,.04);c.rotate(flutter);
  shape(c,p=>{p.moveTo(0,0);p.bezierCurveTo(-.13,.05,kind==='longfin'?-.70:-.22,kind==='longfin'?.52:.31,kind==='longfin'?-.95:-.41,kind==='longfin'?.46:.29);p.bezierCurveTo(kind==='longfin'?-.60:-.25,.15,-.13,-.055,0,0);},known?grad(c,0,0,-.3,.3,[[0,'#a1c6cd'],[.6,fin],[1,dark]]):'#43657a',known?dark:null,.012);c.restore();
  if(type>=2)for(let i=0;i<5;i++){const xx=-.32-i*.08,yy=h*(.77-i*.105);for(const side of [-1,1])shape(c,p=>{p.moveTo(xx,side*yy);p.quadraticCurveTo(xx-.025,side*(yy+.095),xx-.095,side*(yy+.083));p.lineTo(xx-.068,side*(yy-.025));},known?(type===5?'#f7d85a':'#9fb8b8'):'#43657a',null);}
- const eye=kind==='bigeye'?.105:type>=3?.070:.075;
+ const eye=kind==='bigeye'?.077:type>=3?.046:.060;
  oval(c,.73,-h*.20,eye*1.28,eye*1.12,known?'#71867e':'#43657a');oval(c,.74,-h*.22,eye,eye,known?'#f9f1ca':'#43657a');if(known){oval(c,.755,-h*.22,eye*.64,eye*.74,'#112f42');oval(c,.77,-h*.24,eye*.22,eye*.22,'#fffef3');}
  c.restore();
 }

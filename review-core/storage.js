@@ -1,0 +1,6 @@
+import {Game} from './model.js';
+export const KEY='tsuriiko.harbor-candidate.v1',SOURCE='tsuriiko.game.release202610.v1';
+export function openStore(storage){let failure='';const fail=()=>{failure='保存を確認できません。データを残して停止しました。';return {error:failure};};
+ const write=game=>{if(failure)return false;try{const raw=game.save();if(!new Game(raw).restored)throw Error('invalid');const previous=storage.getItem(KEY);if(previous!==null&&previous!==raw){storage.setItem(KEY+'.backup',previous);if(storage.getItem(KEY+'.backup')!==previous)throw Error('backup');}storage.setItem(KEY,raw);if(storage.getItem(KEY)!==raw)throw Error('write');return true;}catch{fail();return false;}};
+ try{let raw=storage.getItem(KEY),imported=false;if(raw===null){if(storage.getItem(KEY+'.backup')!==null)return fail();raw=storage.getItem(SOURCE);if(raw!==null){const saved=storage.getItem(KEY+'.source');if(saved!==null&&saved!==raw)return fail();storage.setItem(KEY+'.source',raw);if(storage.getItem(KEY+'.source')!==raw)return fail();imported=true;}}const game=raw===null?new Game():new Game(raw);if(raw!==null&&!game.restored)return fail();if(!write(game))return fail();return {game,write,imported,get error(){return failure;}};}catch{return fail();}
+}
