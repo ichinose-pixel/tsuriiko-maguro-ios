@@ -1,0 +1,29 @@
+# Draft. Manual-only, unsigned simulator workflow. No signing or publishing integration.
+# Repository root should be this tuna-prototype directory.
+workflows:
+  ios-unsigned-review:
+    name: Tsuriiko unsigned simulator review
+    instance_type: mac_mini_m2
+    max_build_duration: 30
+    environment:
+      xcode: 26.0
+      node: 24.19.0
+    scripts:
+      - name: Locked dependencies and regression tests
+        script: |
+          set -euo pipefail
+          npm ci
+          npm test
+      - name: Bundle and sync iOS
+        script: |
+          set -euo pipefail
+          npm run sync:ios
+      - name: Unsigned simulator build
+        script: |
+          set -euo pipefail
+          xcodebuild -version
+          xcodebuild -resolvePackageDependencies -project ios/App/App.xcodeproj -scheme App
+          xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
+    artifacts:
+      - build/Build/Products/Debug-iphonesimulator/*.app
+# No triggering block, integrations, ios_signing or publishing. CI execution needs approval.

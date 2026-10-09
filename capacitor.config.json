@@ -1,0 +1,6 @@
+{
+  "appId": "com.example.tsuriiko.tuna",
+  "appName": "黒潮一本釣り（仮）",
+  "webDir": "www",
+  "ios": {"contentInset": "never", "backgroundColor": "#061b2a", "preferredContentMode": "mobile"}
+}
