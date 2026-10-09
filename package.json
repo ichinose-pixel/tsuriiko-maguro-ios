@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.mjs",
-    "test": "node --test tests/*.test.mjs",
+    "test": "node --test invariants.test.mjs tempo.test.mjs fresh-save.test.mjs",
     "build:web": "node build.mjs",
     "build:native": "node build-native.mjs",
     "sync:ios": "npm run build:native && cap sync ios"

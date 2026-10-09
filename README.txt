@@ -1,12 +1,22 @@
-釣りいこ！マグロ大作戦
-片手の左右ドラッグで魚を掛け、道具を育てて大型マグロを狙う船釣りゲーム。
-Canvas/WebAudioによるオリジナル描画と音。広告・課金・分析SDKは未接続。
+釣りいこ！マグロ大作戦 — Web release, 2026-10
 
-Web試遊: play-offline.htmlをブラウザで開く。
-開発: npm ci / npm test / npm run sync:ios
-Bundle ID: jp.tsuriiko.maguro
-ios-unsigned-review: 署名なしSimulator検査。
-ios-testflight: 署名・App Store Connect設定確認後の手動アップロード用。
-両workflowともM2・30分上限、自動起動なし。
-実iPhoneでの安全領域、タッチ、保存・中断復帰、音の検証は継続中。
-依存ライセンスはlicenses/を参照。アプリアイコンは現在開発用の仮素材。
+Run npm start to serve the source. Run npm test for web model/save regressions.
+Run npm run build:web to create web-dist, then serve that directory over HTTP.
+The release uses original procedural Canvas art and credited CC0 recordings in audio/CREDITS.txt.
+
+This release starts fresh at 3 fish / 4 metres / zero money. It uses
+tsuriiko.game.release202610.v1. Previous storage keys are never read, changed,
+migrated or deleted. Current saves stop safely on corruption or storage failure.
+
+The existing review-core URL remains a separate historical review candidate.
+No ads, purchases, analytics, accounts or external game APIs are connected.
+
+iOS/TestFlight are outside this web release. Native project files remain in the
+repository for future work; the old native storage contract is not compatible
+with this release yet. Do not treat the web checks as native validation.
+The prepare-testflight branch retains the previous native preparation.
+Legacy tests under tests/ describe the previous implementation; npm test now
+runs the current web release tests listed above.
+
+play-offline.html redirects to the HTTP-served index; audio is served as local
+assets. Opening files through file:// is not a supported release mode.

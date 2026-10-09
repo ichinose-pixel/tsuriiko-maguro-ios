@@ -1,6 +1,5 @@
 import fs from 'node:fs';
-let summary=fs.readFileSync('result-summary.js','utf8').replace(/export /g,'');
-let platform=fs.readFileSync('platform.js','utf8').replace(/export /g,'');
-let brand=fs.readFileSync('brand.js','utf8').replace(/export /g,'');
-let h=fs.readFileSync('index.html','utf8'),css=fs.readFileSync('style.css','utf8'),model=fs.readFileSync('model.js','utf8').replace(/export /g,''),js=fs.readFileSync('game.js','utf8').replace(/^import[^\n]+\n/gm,'');
-h=h.replace('<link rel="stylesheet" href="style.css">',`<style>${css}</style>`).replace('<script type="module" src="game.js"></script>',`<script type="module">${summary}\n${brand}\n${model}\n${platform}\n${js}</script>`);fs.writeFileSync('play-offline.html',h);console.log('Standalone playable build',Buffer.byteLength(h),'bytes');
+const files=["art.js","audio-engine.js","brand.js","game.js","index.html","model.js","persistence.js","platform.js","result-summary.js","style.css","audio/bgm.mp3","audio/bigCatch.wav","audio/cast.wav","audio/catch.wav","audio/coin.wav","audio/CREDITS.txt","audio/land.mp3","audio/reel.wav","audio/splash.wav","audio/ui.wav"];
+fs.mkdirSync('web-dist',{recursive:true});
+for(const name of files){const dest='web-dist/'+name;fs.mkdirSync(dest.slice(0,dest.lastIndexOf('/')),{recursive:true});fs.copyFileSync(name,dest);}
+console.log('Static web release built in web-dist ('+files.length+' files)');

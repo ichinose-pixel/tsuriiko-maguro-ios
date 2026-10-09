@@ -11,3 +11,5 @@ build/
 .env*
 !*.example
 /TESTFLIGHT-HANDOFF.txt
+
+web-dist/
