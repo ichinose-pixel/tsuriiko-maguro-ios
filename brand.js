@@ -1,9 +1,9 @@
-// Provisional identity only. No partner/channel assets are bundled.
+// App name approved 2026-10-09. Partner/channel artwork is still not bundled.
 export const BRAND = {
- title: '黒潮一本釣り（仮）',
+ title: '釣りいこ！マグロ大作戦',
  candidateTitle: '釣りいこ！マグロ大作戦',
- candidateStatus: '提案中・未確定',
- shortTitle: '黒潮一本釣り（仮）',
+ candidateStatus: '名称承認済み',
+ shortTitle: '釣りいこ！マグロ大作戦',
  harborLine: '船釣りタイアップ試作',
  accent: '#f3c760',
  hullStripe: '#e67a4d',

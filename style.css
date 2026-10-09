@@ -27,3 +27,6 @@ header{left:calc(var(--safe-left) + 16px);right:calc(var(--safe-right) + 12px)}
 .overlay,#bookOverlay{padding-left:calc(var(--safe-left) + 12px);padding-right:calc(var(--safe-right) + 12px)}
 .title-panel{max-height:100%;overflow-y:auto}
 .dialog-head{position:sticky;top:-18px;background:#0d3148;z-index:1;padding:6px 0}
+
+/* Approved full title remains readable beside 44px controls. */
+header h1{white-space:normal;font-size:12px;line-height:1.2;overflow:visible;text-overflow:clip;letter-spacing:0}header .brand>span{font-size:8px}

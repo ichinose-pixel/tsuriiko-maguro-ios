@@ -1,4 +1,4 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#082b44"><title>船釣りゲーム・本編候補</title><style>*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#061b2a;color:#edf5f1;font-family:system-ui,-apple-system,'Yu Gothic',sans-serif;overscroll-behavior:none}button,input{font:inherit}button{cursor:pointer;border:0;color:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent}button:focus-visible,input:focus-visible{outline:3px solid #fff;outline-offset:3px}[hidden]{display:none!important}
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#082b44"><title>釣りいこ！マグロ大作戦</title><style>*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#061b2a;color:#edf5f1;font-family:system-ui,-apple-system,'Yu Gothic',sans-serif;overscroll-behavior:none}button,input{font:inherit}button{cursor:pointer;border:0;color:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent}button:focus-visible,input:focus-visible{outline:3px solid #fff;outline-offset:3px}[hidden]{display:none!important}
 #app{--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);position:relative;isolation:isolate;max-width:460px;height:100dvh;min-height:480px;padding-top:var(--safe-top);padding-bottom:var(--safe-bottom);margin:auto;overflow:hidden;background:#0b5166}#sea{position:absolute;width:100%;height:100%;inset:0;touch-action:none}
 header{position:absolute;top:calc(var(--safe-top) + 7px);left:16px;right:12px;display:flex;align-items:center;gap:6px}.brand{flex:1;min-width:0}.brand>span{font-size:8px;letter-spacing:1px;color:#acd2d5;font-weight:700}h1{font-size:15px;letter-spacing:.2px;margin:2px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}header button{min-width:44px;height:44px;background:#082b40a8;border:1px solid #b2d5dc40;border-radius:12px;font-size:10px;font-weight:700}#pause{font-size:20px}
 #hud{position:absolute;top:calc(var(--safe-top) + 59px);left:16px;right:16px;display:flex;gap:14px;border-top:1px solid #c4e9e533;padding-top:6px}#hud div{flex:1}#hud div:first-child{flex:1.3}#hud small{display:block;font-size:10px;color:#acd0d5}#hud strong{font-size:18px;font-variant-numeric:tabular-nums}
@@ -27,9 +27,12 @@ header{left:calc(var(--safe-left) + 16px);right:calc(var(--safe-right) + 12px)}
 .overlay,#bookOverlay{padding-left:calc(var(--safe-left) + 12px);padding-right:calc(var(--safe-right) + 12px)}
 .title-panel{max-height:100%;overflow-y:auto}
 .dialog-head{position:sticky;top:-18px;background:#0d3148;z-index:1;padding:6px 0}
+
+/* Approved full title remains readable beside 44px controls. */
+header h1{white-space:normal;font-size:12px;line-height:1.2;overflow:visible;text-overflow:clip;letter-spacing:0}header .brand>span{font-size:8px}
 </style></head><body><main id="app">
 <canvas id="sea" aria-label="海。左右にドラッグして魚を狙う"></canvas>
-<header><div class="brand"><span>タイアップ検討用 / 仮題</span><h1>黒潮一本釣り（仮）</h1></div><button id="bookButton" aria-label="図鑑と釣果記録" hidden>図鑑</button><button id="sound" aria-label="音をオンにする">音 OFF</button><button id="pause" aria-label="設定と一時停止">⚙</button></header>
+<header><div class="brand"><span>船釣りゲーム</span><h1>釣りいこ！マグロ大作戦</h1></div><button id="bookButton" aria-label="図鑑と釣果記録" hidden>図鑑</button><button id="sound" aria-label="音をオンにする">音 OFF</button><button id="pause" aria-label="設定と一時停止">⚙</button></header>
 <section id="hud"><div><small>所持金</small><strong id="money">¥0</strong></div><div><small>仕掛け</small><strong id="capacity">0 / 4 尾</strong></div><div><small>水深</small><strong id="depth">0 m</strong></div></section>
 <div id="mission"></div><div id="toast" aria-live="polite"></div><div id="caughtName"></div>
 <section id="dock"><div id="result"><span id="recordBadge"></span><span id="resultTitle"></span><strong id="resultMoney"></strong><span id="resultDetail"></span></div>
@@ -37,8 +40,8 @@ header{left:calc(var(--safe-left) + 16px);right:calc(var(--safe-right) + 12px)}
 <button id="cast" class="primary">釣りをはじめる →</button><button id="claim" class="primary" hidden>釣果を受け取る →</button>
 <div id="timing" hidden><div class="timing-label">中央でタップ → 深場へ</div><div id="gauge"><i></i><b id="needle"></b></div><button id="drop" class="primary">投下！</button></div>
 <div id="steering" hidden><div id="instruction">海を左右にドラッグ</div><div class="dragline"><span>‹</span><b>左右にスライド</b><span>›</span></div><small id="capacityHint"></small></div>
-<footer><span>本編候補 · 広告なし</span><span id="saveStatus">自動保存</span></footer></section>
-<section id="titleOverlay" class="overlay title-screen" aria-label="タイトル"><div class="title-panel"><span class="eyebrow">ORIGINAL FISHING GAME / 仮題</span><h2 id="titleName">黒潮一本釣り</h2><p>一投ずつ、まだ見ぬ大物へ。</p><div id="titleProgress"></div><button id="enter" class="primary">出航する →</button><small>左右にドラッグ。巻き上げは自動。</small><button id="titleSettings" class="text-button">設定</button></div></section>
+<footer><span>テスト版 · 広告なし</span><span id="saveStatus">自動保存</span></footer></section>
+<section id="titleOverlay" class="overlay title-screen" aria-label="タイトル"><div class="title-panel"><span class="eyebrow">TSURIIKO FISHING GAME</span><h2 id="titleName">釣りいこ！マグロ大作戦</h2><p>一投ずつ、まだ見ぬ大物へ。</p><div id="titleProgress"></div><button id="enter" class="primary">出航する →</button><small>左右にドラッグ。巻き上げは自動。</small><button id="titleSettings" class="text-button">設定</button></div></section>
 <section id="pauseOverlay" class="overlay" role="dialog" aria-modal="true" aria-label="設定と一時停止" hidden><div class="dialog"><span class="eyebrow">ひとやすみ</span><h2>設定</h2><label class="setting-row" for="volume">音量 <output id="volumeValue">65%</output></label><input id="volume" type="range" min="0" max="100" value="65" aria-label="音量"><button id="settingsSound" class="secondary">音をオンにする</button><label class="setting-row check"><input id="motion" type="checkbox"> 光と動きを控えめにする</label><p id="saveNotice">釣りの途中から再開できます</p><p class="small">この開発版は広告・購入なし</p><button id="resume" class="primary">釣りに戻る</button><button id="toTitle" class="text-button">タイトルへ</button></div></section>
 <section id="bookOverlay" class="overlay" role="dialog" aria-modal="true" aria-label="図鑑と釣果記録" hidden><div class="dialog book-dialog"><div class="dialog-head"><h2>釣果手帳</h2><button id="closeBook" class="secondary">閉じる</button></div><p id="bookSummary"></p><div id="bookGrid"></div><h3>最近の釣果</h3><div id="historyList"></div></div></section>
 </main><script type="module">function resultSummary(state){
@@ -46,12 +49,12 @@ header{left:calc(var(--safe-left) + 16px);right:calc(var(--safe-right) + 12px)}
  return {best,isRecord:!!best&&state.newRecords.includes(best.type),isDiscovery:!!best&&state.newSpecies.includes(best.type)};
 }
 
-// Provisional identity only. No partner/channel assets are bundled.
+// App name approved 2026-10-09. Partner/channel artwork is still not bundled.
 const BRAND = {
- title: '黒潮一本釣り（仮）',
+ title: '釣りいこ！マグロ大作戦',
  candidateTitle: '釣りいこ！マグロ大作戦',
- candidateStatus: '提案中・未確定',
- shortTitle: '黒潮一本釣り（仮）',
+ candidateStatus: '名称承認済み',
+ shortTitle: '釣りいこ！マグロ大作戦',
  harborLine: '船釣りタイアップ試作',
  accent: '#f3c760',
  hullStripe: '#e67a4d',

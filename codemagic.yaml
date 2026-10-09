@@ -1,4 +1,4 @@
-# Draft. Manual-only, unsigned simulator workflow. No signing or publishing integration.
+# Manual-only workflows. Signed workflow is gated on Apple record confirmation.
 # Repository root should be this tuna-prototype directory.
 workflows:
   ios-unsigned-review:
@@ -26,4 +26,59 @@ workflows:
           xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
     artifacts:
       - build/Build/Products/Debug-iphonesimulator/*.app
-# No triggering block, integrations, ios_signing or publishing. CI execution needs approval.
+  ios-testflight:
+    name: Tsuriiko TestFlight upload
+    instance_type: mac_mini_m2
+    max_build_duration: 30
+    integrations:
+      app_store_connect: "Codemagic hamudoku"
+    environment:
+      xcode: 26.0
+      node: 24.19.0
+      ios_signing:
+        certificates:
+          - hamudoku-distribution
+        provisioning_profiles:
+          - TSURIIKO_PROFILE_PENDING
+      vars:
+        ASC_APP_ID: "6820910398"
+    scripts:
+      - name: Verify confirmed Apple identity
+        script: |
+          set -euo pipefail
+          node scripts/release-preflight.mjs
+      - name: Install, test and sync local assets
+        script: |
+          set -euo pipefail
+          npm ci
+          npm test
+          npm run sync:ios
+      - name: Assign unique build number
+        script: |
+          set -euo pipefail
+          cd ios/App
+          : "${PROJECT_BUILD_NUMBER:?Codemagic project build number required}"
+          agvtool new-version -all "$PROJECT_BUILD_NUMBER"
+      - name: Use existing signing assets and standard export
+        script: |
+          set -euo pipefail
+          xcode-project use-profiles --project ios/App/App.xcodeproj --archive-method app-store --custom-export-options='{"testFlightInternalTestingOnly":false}'
+          python3 - <<'PY'
+          import os, plistlib
+          with open(os.path.expanduser('~/export_options.plist'), 'rb') as f:
+              options = plistlib.load(f)
+          assert options.get('testFlightInternalTestingOnly') is False, 'Standard TestFlight export required'
+          PY
+      - name: Build signed IPA
+        script: |
+          set -euo pipefail
+          xcode-project build-ipa --project ios/App/App.xcodeproj --scheme App --config Release --ipa-directory artifacts/ipa --no-show-build-settings
+    artifacts:
+      - artifacts/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: false
+        submit_to_app_store: false
+# No automatic triggering; cloud browser operator starts the approved build once.

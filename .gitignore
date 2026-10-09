@@ -10,3 +10,4 @@ build/
 *.mobileprovision
 .env*
 !*.example
+/TESTFLIGHT-HANDOFF.txt
