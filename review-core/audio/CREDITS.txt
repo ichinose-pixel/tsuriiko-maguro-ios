@@ -1,0 +1,26 @@
+音源クレジット / CC0 1.0 選択 / 取得確認 2026-10-09
+ゲーム内の合成音は使用しません。音声は以下の既存録音素材です。
+
+BGM: Gone Fishin' — iamoneabe
+https://opengameart.org/content/gone-fishin-0
+https://opengameart.org/sites/default/files/gonefishin_0.mp3
+
+水揚げ: The Reel Winner — Memoraphile @ You're Perfect Studio
+https://opengameart.org/content/gone-fishin
+https://opengameart.org/sites/default/files/the_reel_winner_by_memoraphile_CC0.mp3
+
+投下・巻取り・飛沫・通常捕獲・大物・決定: Fisheefects — Memoraphile
+https://opengameart.org/content/fisheefects
+配布原ファイル: bloop.wav, reel.wav, splash.wav, point_normal.wav, point_special.wav, cursor_select.wav
+https://opengameart.org/sites/default/files/ 配下。download-results.json に個別URLとサイズを保存。
+
+コイン: Coin Splash — LordTomorrow
+https://opengameart.org/content/coin-splash
+https://opengameart.org/sites/default/files/coinsplash_0.ogg
+coin.wav は同じ音声を FFmpeg で PCM WAV に変換。音楽・音色を追加合成していません。
+
+選択ライセンス: CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+各一次配布ページでCC0表記を確認。商用利用・複製・変更・再配布が可能。
+作者クレジットは任意ですが本ファイルとゲーム内に維持します。
+音楽の作風とゲームへの適合性・端末スピーカーでの聴感はレビュー待ちです。
