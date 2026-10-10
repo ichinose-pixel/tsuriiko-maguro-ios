@@ -1,4 +1,4 @@
-import {rods,baits,hints} from './catalog.js';
+import {rods,baits,hints} from './catalog.js?v=harbor-r2';
 // Pure simulation and durable transactions. No browser, SDK, or wall clock dependency.
 export const species = [
  {id:'sardine',name:'イワシ',value:20,color:'#b4e2dc',size:24,min:0.5,weight:[.2,.6],shape:'slender'},
@@ -15,7 +15,7 @@ const round5=n=>Math.round(n/5)*5;
 const phases=['ready','aim','down','up','landing','result'];
 export class Game {
  constructor(raw){
-  this.s={version:4,legacyCapacityBonus:0,rodTier:0,catchWait:0,upElapsed:0,phase:'ready',money:0,depthLevel:0,capLevel:0,casts:0,totalFish:0,best:0,bestWeight:0,tuna:0,
+  this.s={version:4,legacyCapacityBonus:0,rodTier:0,returnElapsed:0,returnStartDepth:0,catchWait:0,upElapsed:0,phase:'ready',money:0,depthLevel:0,capLevel:0,casts:0,totalFish:0,best:0,bestWeight:0,tuna:0,
    muted:true,volume:.65,reducedMotion:false,seed:1927,elapsed:0,x:.5,targetX:.5,depth:0,castDepth:12,
    fish:[],caught:[],caughtDetails:[],events:[],earnings:0,landing:0,spinner:0,flash:0,
    lastClaimedId:0,pending:null,newRecords:[],newSpecies:[],history:[],book:species.map(()=>({count:0,best:0})),
@@ -31,7 +31,7 @@ export class Game {
  rand(){this.s.seed=(Math.imul(this.s.seed,1664525)+1013904223)>>>0;return this.s.seed/4294967296;}
  start(){
   if(this.s.phase!=='ready'||this.s.pending)return false;
-  Object.assign(this.s,{phase:'aim',catchWait:0,upElapsed:0,spinner:0,earnings:0,caught:[],caughtDetails:[],events:[],depth:0,x:.5,targetX:.5,landing:0,newRecords:[],newSpecies:[]});return true;
+  Object.assign(this.s,{phase:'aim',returnElapsed:0,returnStartDepth:0,catchWait:0,upElapsed:0,spinner:0,earnings:0,caught:[],caughtDetails:[],events:[],depth:0,x:.5,targetX:.5,landing:0,newRecords:[],newSpecies:[]});return true;
  }
  cast(){
   if(this.s.phase!=='aim')return false;
@@ -64,7 +64,11 @@ export class Game {
     if(s.depth>=s.castDepth){s.depth=s.castDepth;s.phase='up';s.events.push({type:'turn'});}
    }else{
     const full=s.caught.length>=this.capacity;s.upElapsed+=dt;
-    s.depth-=s.castDepth/(6+24*(s.castDepth/200)**.75)*(full?1.25:1)*dt;
+    if(full){
+     if(!s.returnStartDepth){s.returnStartDepth=s.depth;s.returnElapsed=0;s.events.push({type:'full'});}
+     s.returnElapsed=Math.min(2.4,s.returnElapsed+dt);const progress=s.returnElapsed/2.4;
+     s.depth=s.returnStartDepth*(1-(.25*progress+.75*progress*progress));
+    }else s.depth-=s.castDepth/(6+24*(s.castDepth/200)**.75)*dt;
     if(!full&&s.catchWait<=0)for(const f of s.fish){
      if(f.caught)continue;const sp=species[f.type];
      if(Math.abs(f.depth-s.depth)<.6+s.castDepth*.009&&Math.abs(f.x-s.x)<.07+sp.size/1100){
@@ -100,6 +104,7 @@ export class Game {
  restore(raw){
   try{
    let d=typeof raw==='string'?JSON.parse(raw):raw;if(!d||typeof d!=='object')return false;
+   d={returnElapsed:0,returnStartDepth:0,...d};if(!Number.isFinite(d.returnElapsed)||d.returnElapsed<0||d.returnElapsed>2.4||!Number.isFinite(d.returnStartDepth)||d.returnStartDepth<0||d.returnStartDepth>200)return false;
    if(d.rodTier===undefined)d={...d,rodTier:Math.min(5,Math.ceil(d.depthLevel/4)),catchWait:0,upElapsed:0};
    if(!Number.isInteger(d.rodTier)||d.rodTier<0||d.rodTier>5||!Number.isFinite(d.catchWait)||d.catchWait<0||!Number.isFinite(d.upElapsed)||d.upElapsed<0)return false;
    if(d.version!==4||![0,1].includes(d.legacyCapacityBonus)||!phases.includes(d.phase))return false;

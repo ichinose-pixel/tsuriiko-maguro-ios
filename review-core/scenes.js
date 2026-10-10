@@ -1,6 +1,9 @@
-import {drawBoat,drawFish} from './art.js';
-import {species} from './model.js';
+import {drawBoat,drawFish} from './art.js?v=harbor-r2';
+import {species} from './model.js?v=harbor-r2';
 export const SCALE=16;
+// A continuous world transform magnifies the first metres without band-boundary jumps.
+export const worldY=d=>d<=0?d*40:16*d+528*(1-Math.exp(-d/22));
+export function worldDepth(y){if(y<=0)return y/40;let d=y/25;for(let i=0;i<5;i++)d-=(worldY(d)-y)/(16+24*Math.exp(-d/22));return Math.max(0,d);}
 const ellipse=(c,x,y,rx,ry,col)=>{c.fillStyle=col;c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);c.fill();};
 const line=(c,pts,col,w=2)=>{c.strokeStyle=col;c.lineWidth=w;c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.stroke();};
 const poly=(c,pts,col)=>{c.fillStyle=col;c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();c.fill();};
@@ -40,12 +43,12 @@ export function shopInterior(c,w,h){
 const stops=[[0,[45,174,169]],[20,[28,139,154]],[60,[18,91,123]],[120,[15,52,82]],[205,[7,27,49]]];
 function color(depth){let i=0;while(i<stops.length-2&&depth>stops[i+1][0])i++;const a=stops[i],b=stops[i+1],k=Math.max(0,Math.min(1,(depth-a[0])/(b[0]-a[0])));return `rgb(${a[1].map((v,j)=>Math.round(v+(b[1][j]-v)*k)).join(',')})`;}
 export function sea(c,w,h,t,camera,surface,top=0){
- for(let y=0;y<h;y+=6){c.fillStyle=color((y+camera-surface)/SCALE);c.fillRect(0,y,w,7);}
+ for(let y=0;y<h;y+=6){c.fillStyle=color(worldDepth(y+camera-surface));c.fillRect(0,y,w,7);}
  const sy=surface-camera;if(sy>0){c.fillStyle=gradient(c,0,sy,'#f6deb0','#a8dcd0');c.fillRect(0,0,w,sy);ellipse(c,w*.84,sy-42,24,24,'#fff3c2');}
  c.save();c.globalAlpha=Math.max(0,.055-camera/15000);for(let i=0;i<4;i++)poly(c,[[i*w*.35-40,sy],[i*w*.35+12,sy],[i*w*.35+160,h],[i*w*.35+70,h]],'#dcf7c6');c.restore();
  // Particles and distant schools have world depths; the world changes with depth.
- const from=Math.max(0,Math.floor((camera-surface)/SCALE/5));for(let k=from;k<from+Math.ceil(h/SCALE/5)+3;k++){const depth=k*5,y=surface+depth*SCALE-camera;for(let j=0;j<3;j++){const x=(Math.sin(k*19+j*3)*.5+.5)*w+Math.sin(t*.2+j)*7;ellipse(c,x,y+j*9,depth>120?1.5:1,depth>120?2:1.5,depth>120?'#99bcce42':'#e9f4d644');}if(k%3===1){c.save();c.globalAlpha=.14;for(let j=0;j<4;j++)drawFish(c,w*(.2+(k%4)*.15)+j*16+Math.sin(t*.35+k)*20,y+j%2*7,k<12?1:3,t,.30,k%2?1:-1,false,species,false);c.restore();}}
+ const from=Math.max(0,Math.floor(worldDepth(camera-surface)/5));for(let k=from;k<from+Math.ceil(h/SCALE/5)+3;k++){const depth=k*5,y=surface+worldY(depth)-camera;for(let j=0;j<3;j++){const x=(Math.sin(k*19+j*3)*.5+.5)*w+Math.sin(t*.2+j)*7;ellipse(c,x,y+j*9,depth>120?1.5:1,depth>120?2:1.5,depth>120?'#99bcce42':'#e9f4d644');}if(k%3===1){c.save();c.globalAlpha=.14;for(let j=0;j<4;j++)drawFish(c,w*(.2+(k%4)*.15)+j*16+Math.sin(t*.35+k)*20,y+j%2*7,k<12?1:3,t,.30,k%2?1:-1,false,species,false);c.restore();}}
  // No seafloor objects are repeated through the water column.
- const bottom=surface+214*SCALE-camera;if(bottom<h+80){poly(c,[[0,bottom+5],[w*.2,bottom-18],[w*.5,bottom+10],[w*.8,bottom-12],[w,bottom],[w,h],[0,h]],'#0c2434');}
- for(let depth=0;depth<=200;depth+=10){const y=surface+depth*SCALE-camera;if(y<top+143||y>h-125)continue;line(c,[[w-23,y],[w-12,y]],'#c5e8df77',1);c.font='600 12px sans-serif';c.fillStyle='#c7e9e0';c.textAlign='right';c.fillText(depth+'m',w-29,y+4);}
+ const bottom=surface+worldY(214)-camera;if(bottom<h+80){poly(c,[[0,bottom+5],[w*.2,bottom-18],[w*.5,bottom+10],[w*.8,bottom-12],[w,bottom],[w,h],[0,h]],'#0c2434');}
+ for(let depth=0;depth<=200;depth+=10){const y=surface+worldY(depth)-camera;if(y<top+143||y>h-125)continue;line(c,[[w-23,y],[w-12,y]],'#c5e8df77',1);c.font='600 12px sans-serif';c.fillStyle='#c7e9e0';c.textAlign='right';c.fillText(depth+'m',w-29,y+4);}
 }
