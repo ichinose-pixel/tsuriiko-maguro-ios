@@ -1,4 +1,4 @@
-import {Game} from './model.js?v=harbor-r2';
+import {Game} from './model.js?v=harbor-r3';
 export const KEY='tsuriiko.harbor-candidate.v1',SOURCE='tsuriiko.game.release202610.v1';
 export function openStore(storage){let failure='';const fail=()=>{failure='保存を確認できません。データを残して停止しました。';return {error:failure};};
  const write=game=>{if(failure)return false;try{const raw=game.save();if(!new Game(raw).restored)throw Error('invalid');const previous=storage.getItem(KEY);if(previous!==null&&previous!==raw){storage.setItem(KEY+'.backup',previous);if(storage.getItem(KEY+'.backup')!==previous)throw Error('backup');}storage.setItem(KEY,raw);if(storage.getItem(KEY)!==raw)throw Error('write');return true;}catch{fail();return false;}};
