@@ -13,18 +13,21 @@ export function drawFish(c,x,y,type,t,scale,dir,known,species,reduced){
  const h={slender:.22,striped:.30,bonito:.35,longfin:.35,bigeye:.43,sickle:.39,barrel:.46}[kind];
  const dark=['#14627b','#164a69','#154563','#1a4368','#233c62','#19456b','#173552'][type];
  const fin=type===5?'#ecc448':type===3?'#739aaf':'#356b86';
- c.save();c.translate(x,y);c.rotate(Math.sin(t*3.4)*.025);c.scale(dir*z,z);
+ c.save();c.translate(x,y);c.rotate(Math.sin(t*3.4)*.025);c.scale(dir*z,z);c.transform(1,Math.sin(t*3.4)*.012,0,1,0,0);
  const body=p=>{if(type===0){p.moveTo(1,.005);p.bezierCurveTo(.65,-.19,-.29,-.23,-.76,-.045);p.lineTo(-.76,.045);p.bezierCurveTo(-.25,.18,.65,.23,1,.005);p.closePath();return;}if(type===6){p.moveTo(.95,.035);p.bezierCurveTo(.76,-.42,.16,-.59,-.30,-.34);p.quadraticCurveTo(-.6,-.17,-.75,-.07);p.lineTo(-.75,.07);p.bezierCurveTo(-.27,.39,.36,.57,.81,.24);p.lineTo(.95,.035);p.closePath();return;}p.moveTo(.98,.012);p.bezierCurveTo(.80,-h*.78,.36,-h*1.22,-.10,-h*.97);p.bezierCurveTo(-.39,-h*.86,-.60,-h*.30,-.75,-.085);p.lineTo(-.75,.085);p.bezierCurveTo(-.42,h*.50,-.21,h*1.03,.16,h);p.bezierCurveTo(.61,h*.91,.87,h*.44,.98,.012);p.closePath();};
  // Caudal peduncle and flexible crescent tail, rather than a triangular cutout.
- c.save();c.translate(-.72,0);c.rotate(Math.sin(t*7)*.11);
- shape(c,p=>{p.moveTo(.06,-.07);p.bezierCurveTo(-.16,-.13,-.29,-.34,-.45,-.48);p.bezierCurveTo(-.43,-.27,-.28,-.07,-.22,0);p.bezierCurveTo(-.31,.13,-.41,.29,-.45,.47);p.bezierCurveTo(-.22,.30,-.08,.14,.06,.075);p.closePath();},known?grad(c,0,-.45,0,.45,[[0,type===5?'#fff090':'#78a8b9'],[.48,fin],[1,dark]]):'#43657a',known?dark:null,.018);c.restore();
+ c.save();c.translate(-.72,0);c.rotate(Math.sin(t*7)*.19);c.scale(1,.88+Math.cos(t*7)*.12);
+ shape(c,p=>{p.moveTo(.06,-.07);p.bezierCurveTo(-.12,-.11,-.29,-.39,-.47,-.52);p.bezierCurveTo(-.41,-.32,-.23,-.14,-.15,0);p.bezierCurveTo(-.24,.16,-.40,.32,-.47,.51);p.bezierCurveTo(-.28,.40,-.11,.12,.06,.075);p.closePath();},known?grad(c,0,-.45,0,.45,[[0,type===5?'#fff090':'#78a8b9'],[.48,fin],[1,dark]]):'#43657a',known?dark:null,.018);if(known){for(const side of [-1,1])for(let j=0;j<3;j++)stroke(c,[[.00,side*.045],[-.22-j*.06,side*(.19+j*.10)]],'#c9dcd933',.008);}c.restore();
+ // Fin membranes pivot subtly; rays remain visible in the enlarged journal.
+ c.save();c.translate(.04,-h*.90);c.rotate(Math.sin(t*4.1)*.035);c.translate(-.04,h*.90);
  // Dorsal fin has a curved leading edge and a soft trailing membrane.
  shape(c,p=>{p.moveTo(-.18,-h*.91);p.bezierCurveTo(-.09,-h-.06,.04,-h-.30,.14,-h-.29);p.bezierCurveTo(.10,-h-.10,.23,-h*.90,.34,-h*.85);p.closePath();},known?grad(c,0,-h-.3,0,-h,[[0,'#91b4c3'],[1,dark]]):'#43657a',known?dark:null,.014);
+ if(known)for(let j=0;j<5;j++)stroke(c,[[-.12+j*.08,-h*.90],[.08+j*.018,-h-.23+j*.036]],'#bdd0cb55',.009);c.restore();
  if(type===5){
   shape(c,p=>{p.moveTo(-.36,-h*.69);p.bezierCurveTo(-.47,-h-.03,-.72,-h-.33,-.90,-h-.34);p.bezierCurveTo(-.68,-h-.08,-.63,-h*.72,-.51,-h*.49);p.closePath();},known?'#f7d34b':'#43657a',known?'#bc9131':null,.015);
   shape(c,p=>{p.moveTo(-.27,h*.76);p.bezierCurveTo(-.41,h+.07,-.68,h+.25,-.80,h+.23);p.bezierCurveTo(-.54,h*.82,-.51,h*.54,-.43,h*.51);p.closePath();},known?'#f0c541':'#43657a');
  }
- const silver=grad(c,0,-h,0,h,[[0,dark],[.25,'#437d98'],[.46,'#9fc5d1'],[.58,'#e9f3ef'],[.76,'#cadad9'],[1,'#81a7b7']]);
+ const silver=grad(c,0,-h,0,h,[[0,dark],[.18,'#356879'],[.39,'#7caab9'],[.53,'#d2e0d9'],[.66,'#f1f1db'],[.85,'#bdcfc6'],[1,'#7396a7']]);
  shape(c,body,known?silver:'#43657a',known?'#1e4c64':null,.018);
  if(known){
   c.save();c.beginPath();body(c);c.clip();
@@ -34,6 +37,10 @@ export function drawFish(c,x,y,type,t,scale,dir,known,species,reduced){
   if(type===0)for(let i=0;i<7;i++)oval(c,-.43+i*.14,-.035,.021,.021,'#264d64');
   if(kind==='striped')for(let i=0;i<7;i++){const xx=-.37+i*.115;shape(c,p=>{p.moveTo(xx,-h*.8);p.bezierCurveTo(xx+.11,-h*.71,xx-.035,-h*.44,xx+.085,-h*.22);},null,'#163f5fb0',.028);}
   if(kind==='bonito')for(let i=0;i<4;i++){const yy=.06+i*.063;shape(c,p=>{p.moveTo(-.41,yy);p.bezierCurveTo(-.08,yy+.05,.18,yy+.08,.46,yy-.03);},null,'#2b556ab8',.025);}
+  // Fine scales are reserved for large portraits; moving play fish keep a clean silhouette.
+  if(z>70){for(let row=0;row<4;row++)for(let i=0;i<15;i++){const xx=-.51+i*.072+(row%2)*.035,yy=-h*.2+row*h*.23;shape(c,p=>{p.moveTo(xx,yy);p.quadraticCurveTo(xx+.024,yy+.022,xx+.045,yy);},null,'#fffce81d',.007);}}
+  if(type===6||type===5)for(let i=0;i<8;i++){const xx=-.46+i*.1,yy=h*(.34+Math.sin(i*.75)*.07);stroke(c,[[xx,yy],[xx+.016,yy+.033]],type===5?'#e1ce8055':'#788f9e55',.013);}
+  shape(c,p=>{p.moveTo(-.65,-h*.17);p.bezierCurveTo(-.24,-h*.74,.25,-h*.82,.58,-h*.48);},null,'#91b4bf66',.015);
   c.restore();
   // Gill cover follows the head curvature; eye sits above a small mouth.
   shape(c,p=>{p.moveTo(.47,-h*.63);p.bezierCurveTo(.35,-.04,.43,h*.55,.56,h*.67);},null,'#36647bb3',.025);
@@ -41,9 +48,9 @@ export function drawFish(c,x,y,type,t,scale,dir,known,species,reduced){
   shape(c,p=>{p.moveTo(.83,.09);p.quadraticCurveTo(.93,.08,.97,.018);},null,'#20465b',.018);
  }
  // Articulated pectoral fin: albacore's long fin remains a distinct silhouette.
- const flutter=Math.sin(t*5.5)*.045;
+ const flutter=Math.sin(t*5.5)*.09;
  c.save();c.translate(.40,.04);c.rotate(flutter);
- shape(c,p=>{p.moveTo(0,0);p.bezierCurveTo(-.13,.05,kind==='longfin'?-.70:-.22,kind==='longfin'?.52:.31,kind==='longfin'?-.95:-.41,kind==='longfin'?.46:.29);p.bezierCurveTo(kind==='longfin'?-.60:-.25,.15,-.13,-.055,0,0);},known?grad(c,0,0,-.3,.3,[[0,'#a1c6cd'],[.6,fin],[1,dark]]):'#43657a',known?dark:null,.012);c.restore();
+ shape(c,p=>{p.moveTo(0,0);p.bezierCurveTo(-.13,.05,kind==='longfin'?-.70:-.22,kind==='longfin'?.52:.31,kind==='longfin'?-.95:-.41,kind==='longfin'?.46:.29);p.bezierCurveTo(kind==='longfin'?-.60:-.25,.15,-.13,-.055,0,0);},known?grad(c,0,0,-.3,.3,[[0,'#a1c6cd'],[.6,fin],[1,dark]]):'#43657a',known?dark:null,.012);if(known){for(let j=0;j<3;j++)stroke(c,[[0,0],[kind==='longfin'?-.64-j*.09:-.25-j*.05,kind==='longfin'?.26+j*.06:.17+j*.04]],'#d3ded43d',.008);}c.restore();
  if(type>=2)for(let i=0;i<5;i++){const xx=-.32-i*.08,yy=h*(.77-i*.105);for(const side of [-1,1])shape(c,p=>{p.moveTo(xx,side*yy);p.quadraticCurveTo(xx-.025,side*(yy+.095),xx-.095,side*(yy+.083));p.lineTo(xx-.068,side*(yy-.025));},known?(type===5?'#f7d85a':'#9fb8b8'):'#43657a',null);}
  const eye=kind==='bigeye'?.077:type>=3?.046:.060;
  oval(c,.73,-h*.20,eye*1.28,eye*1.12,known?'#71867e':'#43657a');oval(c,.74,-h*.22,eye,eye,known?'#f9f1ca':'#43657a');if(known){oval(c,.755,-h*.22,eye*.64,eye*.74,'#112f42');oval(c,.77,-h*.24,eye*.22,eye*.22,'#fffef3');}
@@ -91,6 +98,10 @@ export function drawBoat(c,{x,y,t,scale=1,phase,caught,reduced,alpha=1}){
  shape(c,p=>{p.moveTo(-101,18);p.bezierCurveTo(-47,32,48,37,101,20);p.quadraticCurveTo(79,36,50,36);p.quadraticCurveTo(-48,40,-89,25);p.closePath();},'#215675');
  shape(c,p=>{p.moveTo(-120,-6);p.bezierCurveTo(-38,11,70,9,129,-11);},null,'#fffdf0',4);
  for(let i=0;i<3;i++)oval(c,34+i*18,14-i*.5,3.2,2.5,'#356e87');
+ for(let i=0;i<7;i++)oval(c,-85+i*27,6+Math.sin(i*.5)*3,.9,.9,'#7b9c9c');
+ stroke(c,[[-104,9],[-90,17]],'#fffcebaa',1);stroke(c,[[77,20],[94,13]],'#8bafb255',1);
+ // Rubber fender and rope cast a small shadow against the near gunwale.
+ stroke(c,[[-75,1],[-75,13]],'#c5bea1',1.2);shape(c,p=>p.roundRect(-81,10,11,22,5),'#203e4d');shape(c,p=>p.roundRect(-78,12,4,17,2),'#4e707c');
  c.fillStyle='#22516b';c.font='800 12px system-ui';c.textAlign='center';c.save();c.translate(-25,15);c.rotate(.045);c.fillText('釣りいこ！',0,0);c.restore();
  shape(c,p=>{p.moveTo(-114,29);p.bezierCurveTo(-67,36,55,47,109,28);},null,'#e6ffffb0',2);c.restore();
 }

@@ -1,4 +1,4 @@
-import {rods,baits,hints} from './catalog.js?v=harbor-r2';
+import {rods,baits,hints} from './catalog.js?v=harbor-r3';
 // Pure simulation and durable transactions. No browser, SDK, or wall clock dependency.
 export const species = [
  {id:'sardine',name:'イワシ',value:20,color:'#b4e2dc',size:24,min:0.5,weight:[.2,.6],shape:'slender'},
@@ -22,6 +22,7 @@ export class Game {
    entitlements:{adRemoval:false,source:'none'},firstUpgradeCast:0};
   this.restored=raw?this.restore(raw):false;
  }
+ get castPower(){return .8+.2*(1-Math.abs(Math.sin(this.s.spinner)));}
  get capacity(){return 3+this.s.capLevel+this.s.legacyCapacityBonus;}
  get maxDepth(){return rods[this.s.rodTier].depth;}
  get gearStage(){return Math.min(4,Math.floor(this.s.depthLevel/3));}
@@ -31,11 +32,11 @@ export class Game {
  rand(){this.s.seed=(Math.imul(this.s.seed,1664525)+1013904223)>>>0;return this.s.seed/4294967296;}
  start(){
   if(this.s.phase!=='ready'||this.s.pending)return false;
-  Object.assign(this.s,{phase:'aim',returnElapsed:0,returnStartDepth:0,catchWait:0,upElapsed:0,spinner:0,earnings:0,caught:[],caughtDetails:[],events:[],depth:0,x:.5,targetX:.5,landing:0,newRecords:[],newSpecies:[]});return true;
+  Object.assign(this.s,{phase:'aim',returnElapsed:0,returnStartDepth:0,catchWait:0,upElapsed:0,spinner:Math.PI/2,earnings:0,caught:[],caughtDetails:[],events:[],depth:0,x:.5,targetX:.5,landing:0,newRecords:[],newSpecies:[]});return true;
  }
  cast(){
   if(this.s.phase!=='aim')return false;
-  const s=this.s,power=1;
+  const s=this.s,power=this.castPower;
   s.castDepth=this.maxDepth*power;s.phase='down';s.casts++;s.fish=[];s.seed=1927+s.casts*943;
   const count=15+Math.floor(s.castDepth/4);
   for(let i=0;i<count;i++){
