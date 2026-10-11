@@ -1,5 +1,5 @@
-import {drawBoat,drawFish} from './art.js?v=harbor-r3';
-import {species} from './model.js?v=harbor-r3';
+import {drawBoat,drawFish} from './art.js?v=harbor-r4';
+import {species} from './model.js?v=harbor-r4';
 export const SCALE=16;
 // A continuous world transform magnifies the first metres without band-boundary jumps.
 export const worldY=d=>d<=0?d*40:16*d+528*(1-Math.exp(-d/22));

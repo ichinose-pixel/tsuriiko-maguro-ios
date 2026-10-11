@@ -1,0 +1,11 @@
+Original artwork created specifically for Tsuriiko Maguro through built-in image generation.
+No reference-game images, identifiable real people, logos or embedded lettering were used in these delivered assets.
+
+Original project assets approved and published by the parent review:
+title-harbor-painted-v1.png — 1024x1536 — Git blob 9b5126fd3aa3ca1eac419cc496746e74d1fdc5d4
+angler-bluecap-yellowvest-v1.png — 1024x1536 RGBA — Git blob 65656c7d74bf241ad11c50cc573d29ddacd440ec
+bluefin-tuna-fieldguide-v1.png — 1774x887 RGBA — Git blob 5d257d46b91ec41cac6593996050f5ad47449c50
+
+harbor-display.webp, angler-display.webp and bluefin-display.webp are resized/compressed display derivatives. Original PNGs are retained unchanged. Character aspect ratio is preserved; no squash/stretch animation is applied.
+
+Other fish, the active fishing boat, tackle and water effects remain original procedural Canvas artwork.

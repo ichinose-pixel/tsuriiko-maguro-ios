@@ -11,7 +11,7 @@ export function drawFish(c,x,y,type,t,scale,dir,known,species,reduced){
  const sp=species[type],z=sp.size*scale,kind=sp.shape;
  if(reduced)t=0;
  const h={slender:.22,striped:.30,bonito:.35,longfin:.35,bigeye:.43,sickle:.39,barrel:.46}[kind];
- const dark=['#14627b','#164a69','#154563','#1a4368','#233c62','#19456b','#173552'][type];
+ const dark=['#14627b','#164a69','#154563','#1a4368','#233c62','#19456b','#102f54'][type];
  const fin=type===5?'#ecc448':type===3?'#739aaf':'#356b86';
  c.save();c.translate(x,y);c.rotate(Math.sin(t*3.4)*.025);c.scale(dir*z,z);c.transform(1,Math.sin(t*3.4)*.012,0,1,0,0);
  const body=p=>{if(type===0){p.moveTo(1,.005);p.bezierCurveTo(.65,-.19,-.29,-.23,-.76,-.045);p.lineTo(-.76,.045);p.bezierCurveTo(-.25,.18,.65,.23,1,.005);p.closePath();return;}if(type===6){p.moveTo(.95,.035);p.bezierCurveTo(.76,-.42,.16,-.59,-.30,-.34);p.quadraticCurveTo(-.6,-.17,-.75,-.07);p.lineTo(-.75,.07);p.bezierCurveTo(-.27,.39,.36,.57,.81,.24);p.lineTo(.95,.035);p.closePath();return;}p.moveTo(.98,.012);p.bezierCurveTo(.80,-h*.78,.36,-h*1.22,-.10,-h*.97);p.bezierCurveTo(-.39,-h*.86,-.60,-h*.30,-.75,-.085);p.lineTo(-.75,.085);p.bezierCurveTo(-.42,h*.50,-.21,h*1.03,.16,h);p.bezierCurveTo(.61,h*.91,.87,h*.44,.98,.012);p.closePath();};
@@ -27,7 +27,7 @@ export function drawFish(c,x,y,type,t,scale,dir,known,species,reduced){
   shape(c,p=>{p.moveTo(-.36,-h*.69);p.bezierCurveTo(-.47,-h-.03,-.72,-h-.33,-.90,-h-.34);p.bezierCurveTo(-.68,-h-.08,-.63,-h*.72,-.51,-h*.49);p.closePath();},known?'#f7d34b':'#43657a',known?'#bc9131':null,.015);
   shape(c,p=>{p.moveTo(-.27,h*.76);p.bezierCurveTo(-.41,h+.07,-.68,h+.25,-.80,h+.23);p.bezierCurveTo(-.54,h*.82,-.51,h*.54,-.43,h*.51);p.closePath();},known?'#f0c541':'#43657a');
  }
- const silver=grad(c,0,-h,0,h,[[0,dark],[.18,'#356879'],[.39,'#7caab9'],[.53,'#d2e0d9'],[.66,'#f1f1db'],[.85,'#bdcfc6'],[1,'#7396a7']]);
+ const silver=grad(c,0,-h,0,h,[[0,dark],[.18,'#365c7b'],[.39,'#88acbc'],[.53,'#d2e0d9'],[.66,'#f1f1db'],[.85,'#bdcfc6'],[1,'#7396a7']]);
  shape(c,body,known?silver:'#43657a',known?'#1e4c64':null,.018);
  if(known){
   c.save();c.beginPath();body(c);c.clip();
@@ -84,8 +84,8 @@ export function drawBoat(c,{x,y,t,scale=1,phase,caught,reduced,alpha=1}){
  shape(c,p=>{p.moveTo(-10,-42);p.lineTo(-9,-51);p.lineTo(3,-51);p.lineTo(7,-39);p.quadraticCurveTo(-2,-35,-10,-42);},'#d69262');
  shape(c,p=>{p.moveTo(-17,-60);p.bezierCurveTo(-18,-72,0,-77,9,-66);p.quadraticCurveTo(12,-58,16,-55);p.lineTo(10,-52);p.quadraticCurveTo(8,-41,-3,-42);p.quadraticCurveTo(-18,-43,-17,-60);},grad(c,-13,-67,10,-42,[[0,'#ffe0b4'],[.6,'#ecb37e'],[1,'#cf875d']]),'#ca8a61',.6);
  oval(c,-15,-55,3,4,'#e3a779');stroke(c,[[4,-61],[9,-60]],'#273e50',1.5);oval(c,8,-57,1.2,1.6,'#223b4b');stroke(c,[[4,-47],[9,-49]],'#8d543f',1);stroke(c,[[-10,-46],[-6,-43],[0,-42]],'#875d48',1.4);
- shape(c,p=>{p.moveTo(-20,-63);p.quadraticCurveTo(-19,-78,-4,-79);p.quadraticCurveTo(11,-79,12,-66);p.closePath();},grad(c,0,-79,0,-62,[[0,'#4290a6'],[1,'#16516f']]),'#184761',.8);
- shape(c,p=>{p.moveTo(-24,-63);p.quadraticCurveTo(-8,-67,17,-63);p.quadraticCurveTo(24,-60,15,-57);p.quadraticCurveTo(-12,-57,-24,-61);p.closePath();},'#216c87','#174b63',1);stroke(c,[[-12,-73],[-3,-75],[5,-71]],'#a8d4d655',1.5);
+ shape(c,p=>{p.moveTo(-20,-63);p.quadraticCurveTo(-19,-78,-4,-79);p.quadraticCurveTo(11,-79,12,-66);p.closePath();},grad(c,0,-79,0,-62,[[0,'#47748f'],[1,'#203f62']]),'#184761',.8);
+ shape(c,p=>{p.moveTo(-24,-63);p.quadraticCurveTo(-8,-67,17,-63);p.quadraticCurveTo(24,-60,15,-57);p.quadraticCurveTo(-12,-57,-24,-61);p.closePath();},'#345a7c','#174b63',1);stroke(c,[[-12,-73],[-3,-75],[5,-71]],'#b3c3ce55',1.5);
  const pull=hauling?Math.sin(t*7)*3:landing?Math.sin(t*6)*6:0;
  stroke(c,[[10,-32],[24,-24-pull],[36,-38-pull]],'#b67f58',9);stroke(c,[[10,-34],[24,-27-pull],[36,-39-pull]],'#f0bd88',6);stroke(c,[[-15,-30],[-2,-18],[27,-32-pull]],'#b77e53',9);stroke(c,[[-15,-32],[-2,-21],[27,-34-pull]],'#f1c18f',6);oval(c,36,-39-pull,4.7,4.5,'#ffe0ae');oval(c,27,-34-pull,4,4,'#f4c992');
  // Rod tension bends continuously; no separate title-only illustration.
