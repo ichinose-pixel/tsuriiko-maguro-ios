@@ -1,6 +1,7 @@
-import {drawBoat,drawFish} from './art.js?v=harbor-r6';
-import {liveWater} from './live-art.js?v=harbor-r6';
-import {species} from './model.js?v=harbor-r6';
+import {painted} from './painted.js?v=harbor-r7-9416ef3';
+import {drawBoat,drawFish} from './art.js?v=harbor-r7-9416ef3';
+import {liveWater} from './live-art.js?v=harbor-r7-9416ef3';
+import {species} from './model.js?v=harbor-r7-9416ef3';
 export const SCALE=16;
 // A continuous world transform magnifies the first metres without band-boundary jumps.
 export const worldY=d=>d<=0?d*64:16*d+1056*(1-Math.exp(-d/22));
@@ -62,9 +63,9 @@ export function shopInterior(c,w,h){
  c.fillStyle=gradient(c,0,135,'#203e40','#537466');c.fillRect(0,0,390,135);
  poly(c,[[0,0],[23,12],[23,123],[0,135]],'#172f32');poly(c,[[367,12],[390,0],[390,135],[367,123]],'#29453e');
  for(let i=0;i<11;i++){const x=23+i*33;line(c,[[x,12],[x,124]],'#b9bc8c18',1);for(let j=0;j<3;j++)line(c,[[x+6,20+j*29],[x+7,36+j*29]],'#c3c69810',1);}
- c.fillStyle='#70553c';c.fillRect(0,0,390,11);line(c,[[0,11],[390,11]],'#b38e5b',2);
+ c.save();for(let n=0;n<350;n++){const x=(Math.sin(n*83.1)*.5+.5)*390,y=(Math.cos(n*47.7)*.5+.5)*135;c.fillStyle=n%2?'#ead0a916':'#061c251a';c.fillRect(x,y,1+(n%7),.7);}c.restore();c.fillStyle='#70553c';c.fillRect(0,0,390,11);line(c,[[0,11],[390,11]],'#b38e5b',2);
  // Open sunlit window behind the tackle rack, with thick jambs.
- c.fillStyle='#274849';c.fillRect(154,17,66,67);c.fillStyle=gradient(c,20,82,'#e8e7ba','#65aba2');c.fillRect(160,21,54,57);poly(c,[[160,62],[178,49],[194,58],[214,53],[214,78],[160,78]],'#7caca0');line(c,[[187,20],[187,80]],'#b79963',4);line(c,[[160,48],[214,48]],'#b79963',3);line(c,[[152,83],[223,83]],'#d8b981',4);
+ c.fillStyle='#274849';c.fillRect(154,17,66,67);c.fillStyle=gradient(c,20,82,'#e8e7ba','#65aba2');c.fillRect(160,21,54,57);if(painted.harbor)c.drawImage(painted.harbor,painted.harbor.width*.18,painted.harbor.height*.35,painted.harbor.width*.65,painted.harbor.height*.35,160,21,54,57);poly(c,[[160,62],[178,49],[194,58],[214,53],[214,78],[160,78]],'#7caca0');line(c,[[187,20],[187,80]],'#b79963',4);line(c,[[160,48],[214,48]],'#b79963',3);line(c,[[152,83],[223,83]],'#d8b981',4);
  poly(c,[[160,83],[214,83],[251,126],[189,126]],'#eddda519');
  for(let i=0;i<5;i++){const x=29+i*23;line(c,[[x,109],[x+19,17]],['#d6ba78','#96b2ab','#c8955b','#97b5b3','#b29e6b'][i],2.5);line(c,[[x,108],[x+4,90]],'#a98251',5);ellipse(c,x+5,81,7+i*.5,7,'#203f45');ellipse(c,x+5,81,5,5,['#d8b86a','#9ab9b0'][i%2]);ellipse(c,x+5,81,2,3,'#2b5360');}
  line(c,[[17,94],[148,94]],'#8a6845',5);line(c,[[17,91],[148,91]],'#c9aa77',2);
@@ -74,15 +75,15 @@ export function shopInterior(c,w,h){
  for(let i=0;i<3;i++){const x=245+i*40;poly(c,[[x,109],[x+27,106],[x+33,111],[x+5,115]],'#d6b782');poly(c,[[x+5,115],[x+33,111],[x+33,125],[x+5,129]],['#ae7e4e','#648575','#ac7652'][i]);line(c,[[x+7,119],[x+29,116]],'#efe2b366',1);}
  poly(c,[[0,124],[390,124],[390,135],[0,135]],'#91643f');line(c,[[0,124],[390,124]],'#dfbd83',3);line(c,[[0,130],[390,130]],'#77563b',1);c.restore();
 }
-const stops=[[0,[45,174,169]],[20,[28,139,154]],[60,[18,91,123]],[120,[15,52,82]],[205,[7,27,49]]];
+const stops=[[0,[45,174,169]],[20,[28,139,154]],[60,[18,91,123]],[120,[15,52,82]],[205,[14,46,69]]];
 function color(depth){let i=0;while(i<stops.length-2&&depth>stops[i+1][0])i++;const a=stops[i],b=stops[i+1],k=Math.max(0,Math.min(1,(depth-a[0])/(b[0]-a[0])));return `rgb(${a[1].map((v,j)=>Math.round(v+(b[1][j]-v)*k)).join(',')})`;}
 export function sea(c,w,h,t,camera,surface,top=0){
  for(let y=0;y<h;y+=6){c.fillStyle=color(worldDepth(y+camera-surface));c.fillRect(0,y,w,7);}
  liveWater(c,w,h,camera,surface);
  const sy=surface-camera;if(sy>0){c.fillStyle=gradient(c,0,sy,'#f6deb0','#a8dcd0');c.fillRect(0,0,w,sy);ellipse(c,w*.84,sy-42,24,24,'#fff3c2');}
- c.save();c.globalAlpha=Math.max(0,.055-camera/15000);for(let i=0;i<4;i++)poly(c,[[i*w*.35-40,sy],[i*w*.35+12,sy],[i*w*.35+160,h],[i*w*.35+70,h]],'#dcf7c6');c.restore();
+ c.save();c.globalAlpha=Math.max(.008,.045-camera/35000);for(let i=0;i<4;i++)poly(c,[[i*w*.35-40,sy],[i*w*.35+12,sy],[i*w*.35+160,h],[i*w*.35+70,h]],'#dcf7c6');c.restore();
  // Particles and distant schools have world depths; the world changes with depth.
- const from=Math.max(0,Math.floor(worldDepth(camera-surface)/5));for(let k=from;k<from+Math.ceil(h/SCALE/5)+3;k++){const depth=k*5,y=surface+worldY(depth)-camera;for(let j=0;j<3;j++){const x=(Math.sin(k*19+j*3)*.5+.5)*w+Math.sin(t*.2+j)*7;ellipse(c,x,y+j*9,depth>120?1.5:1,depth>120?2:1.5,depth>120?'#99bcce42':'#e9f4d644');}if(k%3===1){c.save();c.globalAlpha=.14;for(let j=0;j<4;j++)drawFish(c,w*(.2+(k%4)*.15)+j*16+Math.sin(t*.35+k)*20,y+j%2*7,k<12?1:3,t,.30,k%2?1:-1,false,species,false);c.restore();}}
+ const from=Math.max(0,Math.floor(worldDepth(camera-surface)/5));for(let k=from;k<from+Math.ceil(h/SCALE/5)+3;k++){const depth=k*5,y=surface+worldY(depth)-camera;for(let j=0;j<3;j++){const x=(Math.sin(k*19+j*3)*.5+.5)*w+Math.sin(t*.2+j)*7;ellipse(c,x,y+j*9,depth>120?1.5:1,depth>120?2:1.5,depth>120?'#99bcce42':'#e9f4d644');}if(k%4===1){c.save();c.globalAlpha=.14;for(let j=0;j<4;j++)drawFish(c,w*(.2+(k%4)*.15)+j*16+Math.sin(t*.35+k)*20,y+j%2*7,k<12?1:3,t,.30,k%2?1:-1,false,species,false);c.restore();}}
  // No seafloor objects are repeated through the water column.
  const bottom=surface+worldY(214)-camera;if(bottom<h+80){poly(c,[[0,bottom+5],[w*.2,bottom-18],[w*.5,bottom+10],[w*.8,bottom-12],[w,bottom],[w,h],[0,h]],'#0c2434');}
  for(let depth=0;depth<=200;depth+=10){const y=surface+worldY(depth)-camera;if(y<top+143||y>h-125)continue;line(c,[[w-23,y],[w-12,y]],'#c5e8df77',1);c.font='600 12px sans-serif';c.fillStyle='#c7e9e0';c.textAlign='right';c.fillText(depth+'m',w-29,y+4);}
