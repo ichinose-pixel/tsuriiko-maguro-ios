@@ -1,5 +1,5 @@
-import {boatRig} from './rig.js?v=harbor-r6';
-import {liveFish,liveBoat} from './live-art.js?v=harbor-r6';
+import {boatRig} from './rig.js?v=harbor-r7-9416ef3';
+import {liveFish,liveBoat} from './live-art.js?v=harbor-r7-9416ef3';
 // Original procedural artwork. Shared by title, live fishing and catch journal.
 // Anatomy remains layered so tail, fins, arms, rod and hull move independently.
 const TAU=Math.PI*2;
