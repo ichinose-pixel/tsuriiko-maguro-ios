@@ -1,3 +1,5 @@
+import {boatRig} from './rig.js?v=harbor-r6';
+import {liveFish,liveBoat} from './live-art.js?v=harbor-r6';
 // Original procedural artwork. Shared by title, live fishing and catch journal.
 // Anatomy remains layered so tail, fins, arms, rod and hull move independently.
 const TAU=Math.PI*2;
@@ -8,6 +10,7 @@ function grad(c,x0,y0,x1,y1,stops){const g=c.createLinearGradient(x0,y0,x1,y1);f
 function stroke(c,pts,color,width){shape(c,p=>{pts.forEach(([x,y],i)=>i?p.lineTo(x,y):p.moveTo(x,y));},null,color,width);}
 
 export function drawFish(c,x,y,type,t,scale,dir,known,species,reduced){
+ if(liveFish(c,x,y,type,t,scale,dir,known,species,reduced))return;
  const sp=species[type],z=sp.size*scale,kind=sp.shape;
  if(reduced)t=0;
  const h={slender:.22,striped:.30,bonito:.35,longfin:.35,bigeye:.43,sickle:.39,barrel:.46}[kind];
@@ -58,8 +61,9 @@ export function drawFish(c,x,y,type,t,scale,dir,known,species,reduced){
 }
 
 export function drawBoat(c,{x,y,t,scale=1,phase,caught,reduced,alpha=1}){
- if(reduced)t=0;const hauling=phase==='up',landing=phase==='landing';const load=clamp(caught/3,0,1),lift=landing?Math.sin(t*6)*.10:hauling?Math.sin(t*6)*.035:Math.sin(t*1.7)*.01;
- c.save();c.globalAlpha=alpha;c.translate(x,y+Math.sin(t*1.7)*2);c.scale(scale,scale);c.rotate(Math.sin(t*1.3)*.011);
+ const rig=boatRig({x,y,t,scale,phase,caught,reduced});t=rig.t;const {hauling,landing,load,lift}=rig;
+ if(liveBoat(c,{x,y,t,scale,phase,caught,reduced,alpha},rig))return;
+ c.save();c.globalAlpha=alpha;c.translate(x,y+rig.bob);c.scale(scale,scale);c.rotate(rig.boatAngle);
  oval(c,1,27,123,9,'#08678250');
  // Far rail and deck rim establish a readable three-quarter boat volume.
  shape(c,p=>{p.moveTo(-117,-8);p.bezierCurveTo(-69,-26,57,-25,126,-7);p.bezierCurveTo(78,11,-63,17,-117,-8);p.closePath();},'#e7ece0','#3d7182',1.1);
@@ -77,7 +81,7 @@ export function drawBoat(c,{x,y,t,scale=1,phase,caught,reduced,alpha=1}){
  stroke(c,[[93,-8],[93,-42],[116,-35],[117,-7]],'#eff7ed',2.4);stroke(c,[[91,-23],[116,-19]],'#c4dddc',1.7);
  stroke(c,[[77,-71],[77,-102]],'#7599a8',2);shape(c,p=>{p.moveTo(78,-99);p.quadraticCurveTo(90,-104,106,-94+Math.sin(t*3)*2);p.lineTo(78,-88);p.closePath();},'#f7c747');
  // Bent legs, padded lifejacket, face and articulated arms form one angler.
- c.save();c.translate(-39,-15);c.rotate(-.035-load*.06+lift);
+ c.save();c.translate(-39,-15);c.rotate(rig.personAngle);
  stroke(c,[[-10,-1],[-20,14],[-24,21]],'#1c3b58',11);stroke(c,[[7,-1],[16,11],[11,21]],'#234a65',11);stroke(c,[[-29,23],[-16,23]],'#122e44',7);stroke(c,[[7,23],[22,23]],'#122e44',7);
  shape(c,p=>{p.moveTo(-17,-37);p.quadraticCurveTo(-23,-30,-19,-5);p.quadraticCurveTo(-3,2,15,-8);p.lineTo(12,-36);p.quadraticCurveTo(-2,-45,-17,-37);p.closePath();},grad(c,-20,-36,14,-4,[[0,'#ffdd70'],[.6,'#edae3c'],[1,'#cc7e28']]),'#bc812d',1);
  shape(c,p=>{p.roundRect(-15,-33,11,28,4);p.roundRect(1,-35,11,27,4);},'#ffd964');stroke(c,[[-2,-37],[-2,-6]],'#35536b',2);stroke(c,[[-14,-25],[-5,-25]],'#fff1af',3);stroke(c,[[2,-27],[11,-27]],'#fff1af',3);stroke(c,[[-15,-11],[12,-14]],'#3a5970',3);oval(c,-1,-12,3,3,'#c3d7d4');
@@ -89,7 +93,7 @@ export function drawBoat(c,{x,y,t,scale=1,phase,caught,reduced,alpha=1}){
  const pull=hauling?Math.sin(t*7)*3:landing?Math.sin(t*6)*6:0;
  stroke(c,[[10,-32],[24,-24-pull],[36,-38-pull]],'#b67f58',9);stroke(c,[[10,-34],[24,-27-pull],[36,-39-pull]],'#f0bd88',6);stroke(c,[[-15,-30],[-2,-18],[27,-32-pull]],'#b77e53',9);stroke(c,[[-15,-32],[-2,-21],[27,-34-pull]],'#f1c18f',6);oval(c,36,-39-pull,4.7,4.5,'#ffe0ae');oval(c,27,-34-pull,4,4,'#f4c992');
  // Rod tension bends continuously; no separate title-only illustration.
- const bend=load*15+(hauling?Math.sin(t*6)*3:0);shape(c,p=>{p.moveTo(26,-32-pull);p.bezierCurveTo(57,-111-pull,102,-104,117,-54+bend);},null,'#153d55',3);shape(c,p=>{p.moveTo(29,-41-pull);p.bezierCurveTo(59,-108-pull,101,-99,115,-56+bend);},null,'#bed3c9',.9);
+ const bend=rig.bend;shape(c,p=>{p.moveTo(26,-32-pull);p.bezierCurveTo(57,-111-pull,102,-104,117,-54+bend);},null,'#153d55',3);shape(c,p=>{p.moveTo(29,-41-pull);p.bezierCurveTo(59,-108-pull,101,-99,115,-56+bend);},null,'#bed3c9',.9);
  stroke(c,[[25,-29-pull],[31,-44-pull]],'#765b3e',5);oval(c,29,-32-pull,6,6,'#19435d');oval(c,29,-32-pull,4,4,'#d3e6dd');stroke(c,[[28,-32-pull],[22,-27-pull]],'#527a89',2);
  c.restore();
  // Near gunwale covers the feet naturally and gives the hull a rounded volume.

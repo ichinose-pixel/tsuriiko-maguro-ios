@@ -1,0 +1,817 @@
+{
+  "version": 1,
+  "project": "釣りいこ！マグロ大作戦",
+  "purpose": "Original painted assets for live gameplay",
+  "generation": "Built-in image_gen only; original PNG bytes and alpha preserved",
+  "coordinate_system": "Top-left origin; normalized coordinates use full original canvas before mirroring. Pixel polygons reference the 1024x1536 angler source. All rig points are approximate and require final-size motion QA.",
+  "validation": {
+    "fish": "All 7 fish and all visible fins inspected, plus white/blue composites. New 5 species inspected at 70 px. Sardine also at 20/40 px.",
+    "boat_and_angler": "White/blue composites show no visible broad halo. Transparent RGB may appear like a halo in renderers that ignore alpha.",
+    "angler_base_invariant_silhouette_iou": 0.99182,
+    "limitations": [
+      "Whole-fish originals rather than independently painted articulated layers; use a smooth segmented/mesh deformation with overlapping bands, not a rigid whole-sprite oscillation.",
+      "No separate pectoral fin sprite; landmarks are supplied for masked subregions if needed.",
+      "Requested working resolutions were not exact built-in outputs; native dimensions listed per file.",
+      "Some low-alpha peripheral pixels exist; retain originals and let the renderer use normal alpha compositing."
+    ]
+  },
+  "assets": [
+    {
+      "file": "iwashi-gameplay-side-v1.png",
+      "width": 1983,
+      "height": 793,
+      "mode": "RGBA",
+      "bytes": 1327986,
+      "sha256": "7995d673955e3a2f8bcb60c0b7711deb3552acbcb3ebeefa591a2133ee9b440f",
+      "git_blob_sha": "1b949b96babfe2007a9723267a3190be83953cf8",
+      "kind": "fish",
+      "species_index": 0,
+      "species_id": "sardine",
+      "native_facing": "left",
+      "mirror_for_right_facing": true,
+      "rig_points_normalized_native_canvas": {
+        "tail_hinge": [
+          0.847,
+          0.525
+        ],
+        "pectoral_root": [
+          0.215,
+          0.584
+        ]
+      },
+      "source_note": "Unmodified original PNG; code may mirror and segment for animation.",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds_alpha_gt16": [
+        52,
+        92,
+        1933,
+        673
+      ]
+    },
+    {
+      "file": "saba-gameplay-side-v1.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "bytes": 1368232,
+      "sha256": "f4e96d882a6fb44effb28bfc0ed9affabb4757a1ca184de4adfa9ddc2b1e2905",
+      "git_blob_sha": "6f7a0e0370cfc12877464fbca0cdf33cea0f7e74",
+      "kind": "fish",
+      "species_index": 1,
+      "species_id": "mackerel",
+      "native_facing": "right",
+      "mirror_for_right_facing": false,
+      "rig_points_normalized_native_canvas": {
+        "tail_hinge": [
+          0.16,
+          0.49
+        ],
+        "pectoral_root": [
+          0.79,
+          0.516
+        ]
+      },
+      "source_note": "Unmodified original PNG; code may mirror and segment for animation.",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds_alpha_gt16": [
+        26,
+        147,
+        1748,
+        740
+      ]
+    },
+    {
+      "file": "katsuo-gameplay-side-v1.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "bytes": 1581064,
+      "sha256": "bf03aa4f5aeab1c45be3e44c48397498d557faec5868b1ec1bf6bbc8a9df051f",
+      "git_blob_sha": "d9b1a6ac654267bdfa530620cfe66b5662d6c35b",
+      "kind": "fish",
+      "species_index": 2,
+      "species_id": "bonito",
+      "native_facing": "right",
+      "mirror_for_right_facing": false,
+      "rig_points_normalized_native_canvas": {
+        "tail_hinge": [
+          0.157,
+          0.49
+        ],
+        "pectoral_root": [
+          0.758,
+          0.534
+        ]
+      },
+      "source_note": "Unmodified original PNG; code may mirror and segment for animation.",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds_alpha_gt16": [
+        16,
+        72,
+        1758,
+        801
+      ]
+    },
+    {
+      "file": "bincho-gameplay-side-v1.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "bytes": 1312681,
+      "sha256": "e7b79240bea2351e31cdeb006920a43107634f5ab1fb35e74a53ad8375bb05fe",
+      "git_blob_sha": "934d8926ea30da3ce826fd3bc63e0cd490b76cc8",
+      "kind": "fish",
+      "species_index": 3,
+      "species_id": "albacore",
+      "native_facing": "right",
+      "mirror_for_right_facing": false,
+      "rig_points_normalized_native_canvas": {
+        "tail_hinge": [
+          0.155,
+          0.484
+        ],
+        "pectoral_root": [
+          0.766,
+          0.514
+        ]
+      },
+      "source_note": "Unmodified original PNG; code may mirror and segment for animation.",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds_alpha_gt16": [
+        23,
+        118,
+        1750,
+        757
+      ]
+    },
+    {
+      "file": "mebachi-gameplay-side-v1.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "bytes": 1676014,
+      "sha256": "1a377fd713da963a25e7b1bdf1a12530cc7ffaaaaecac182281eb190921a31df",
+      "git_blob_sha": "9df4e88d397bff77b71e1da48b4d39b03891ab55",
+      "kind": "fish",
+      "species_index": 4,
+      "species_id": "bigeye",
+      "native_facing": "right",
+      "mirror_for_right_facing": false,
+      "rig_points_normalized_native_canvas": {
+        "tail_hinge": [
+          0.151,
+          0.479
+        ],
+        "pectoral_root": [
+          0.736,
+          0.527
+        ]
+      },
+      "source_note": "Unmodified original PNG; code may mirror and segment for animation.",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds_alpha_gt16": [
+        16,
+        73,
+        1760,
+        790
+      ]
+    },
+    {
+      "file": "kihada-gameplay-side-v1.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "bytes": 1325101,
+      "sha256": "8ac21e4a2a053eed4066490fca0ee3a8f7b957812d33d7e93bd3ee0341c3a028",
+      "git_blob_sha": "441751e50c8f634da3048cbd662da262ef3f5bfa",
+      "kind": "fish",
+      "species_index": 5,
+      "species_id": "yellowfin",
+      "native_facing": "right",
+      "mirror_for_right_facing": false,
+      "rig_points_normalized_native_canvas": {
+        "tail_hinge": [
+          0.178,
+          0.533
+        ],
+        "pectoral_root": [
+          0.764,
+          0.541
+        ]
+      },
+      "source_note": "Unmodified original PNG; code may mirror and segment for animation.",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds_alpha_gt16": [
+        46,
+        107,
+        1733,
+        781
+      ]
+    },
+    {
+      "file": "kuro-gameplay-side-v1.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "bytes": 1698494,
+      "sha256": "997beac2d2aa3b1f8bd4879cef5e4f7e527f6f0cf0b6c793bdc812ad1142cc1e",
+      "git_blob_sha": "5d257d46b91ec41cac6593996050f5ad47449c50",
+      "kind": "fish",
+      "species_index": 6,
+      "species_id": "bluefin",
+      "native_facing": "left",
+      "mirror_for_right_facing": true,
+      "rig_points_normalized_native_canvas": {
+        "tail_hinge": [
+          0.844,
+          0.542
+        ],
+        "pectoral_root": [
+          0.263,
+          0.52
+        ]
+      },
+      "source_note": "Unmodified original PNG; code may mirror and segment for animation.",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds_alpha_gt16": [
+        20,
+        48,
+        1763,
+        833
+      ]
+    },
+    {
+      "file": "boat-hull-gameplay-v1.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "bytes": 1346928,
+      "sha256": "3e6f95bcd063c7415f2a72b8c164cdf3bc02ae8658fdbf06eb6fb0b868d9c828",
+      "git_blob_sha": "f182110ec1c2e45273b56ae622e03beaf74018a4",
+      "kind": "boat",
+      "native_facing": "right",
+      "open_deck_rect_normalized": [
+        0.17,
+        0.48,
+        0.34,
+        0.115
+      ],
+      "suggested_angler_boot_anchor_normalized": [
+        0.33,
+        0.578
+      ],
+      "near_gunwale_mask_polyline_normalized": [
+        [
+          0.075,
+          0.566
+        ],
+        [
+          0.2,
+          0.582
+        ],
+        [
+          0.34,
+          0.593
+        ],
+        [
+          0.49,
+          0.591
+        ],
+        [
+          0.61,
+          0.571
+        ],
+        [
+          0.78,
+          0.525
+        ],
+        [
+          0.91,
+          0.466
+        ],
+        [
+          0.98,
+          0.416
+        ]
+      ],
+      "layering_note": "Draw whole boat behind angler; redraw identical boat pixels below the gunwale polyline in front. No separately regenerated gunwale needed.",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds_alpha_gt16": [
+        38,
+        218,
+        1755,
+        731
+      ]
+    },
+    {
+      "file": "angler-gameplay-no-rod-v1.png",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "bytes": 1967566,
+      "sha256": "e97e9ea1d092e371e05852fd9cb93b8d30dafca48d5b33367c3d3004318f0af8",
+      "git_blob_sha": "e2253ec2da8e78407705b60301cb5a5070a0834f",
+      "kind": "angler_source",
+      "native_facing": "right",
+      "rod_and_line_included": false,
+      "forearms_removed": false,
+      "rig_source_file": "angler-gameplay-no-rod-v1.png",
+      "rig_points_px": {
+        "near_elbow": [
+          414,
+          524
+        ],
+        "near_grip": [
+          670,
+          555
+        ],
+        "far_elbow": [
+          699,
+          481
+        ],
+        "far_grip": [
+          860,
+          458
+        ],
+        "hip": [
+          465,
+          710
+        ]
+      },
+      "source_forearm_cutout_polygons_px": {
+        "near": [
+          [
+            420,
+            484
+          ],
+          [
+            493,
+            510
+          ],
+          [
+            617,
+            521
+          ],
+          [
+            638,
+            510
+          ],
+          [
+            657,
+            508
+          ],
+          [
+            680,
+            518
+          ],
+          [
+            684,
+            529
+          ],
+          [
+            707,
+            537
+          ],
+          [
+            718,
+            548
+          ],
+          [
+            714,
+            560
+          ],
+          [
+            720,
+            570
+          ],
+          [
+            711,
+            582
+          ],
+          [
+            693,
+            592
+          ],
+          [
+            681,
+            602
+          ],
+          [
+            659,
+            601
+          ],
+          [
+            638,
+            591
+          ],
+          [
+            622,
+            582
+          ],
+          [
+            560,
+            579
+          ],
+          [
+            490,
+            577
+          ],
+          [
+            426,
+            565
+          ],
+          [
+            397,
+            551
+          ],
+          [
+            394,
+            534
+          ],
+          [
+            402,
+            510
+          ]
+        ],
+        "far": [
+          [
+            704,
+            440
+          ],
+          [
+            756,
+            447
+          ],
+          [
+            811,
+            435
+          ],
+          [
+            823,
+            419
+          ],
+          [
+            841,
+            410
+          ],
+          [
+            864,
+            415
+          ],
+          [
+            871,
+            426
+          ],
+          [
+            893,
+            432
+          ],
+          [
+            908,
+            446
+          ],
+          [
+            907,
+            465
+          ],
+          [
+            898,
+            472
+          ],
+          [
+            899,
+            483
+          ],
+          [
+            884,
+            497
+          ],
+          [
+            865,
+            508
+          ],
+          [
+            845,
+            509
+          ],
+          [
+            829,
+            508
+          ],
+          [
+            814,
+            504
+          ],
+          [
+            791,
+            513
+          ],
+          [
+            741,
+            526
+          ],
+          [
+            703,
+            521
+          ],
+          [
+            680,
+            509
+          ],
+          [
+            678,
+            489
+          ],
+          [
+            689,
+            463
+          ]
+        ]
+      },
+      "source_cutout_note": "Approximate traced polygon boundaries, verified by overlay QA. Preserve originals and tune cuff overlap at final gameplay scale. Base plate is registered closely but is a generated edit, not pixel-identical outside the edited region. Start with small elbow rotations; derive rod anchors from the same transformed grip coordinates.",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "visible_bounds_alpha_gt16": [
+        155,
+        24,
+        909,
+        1512
+      ]
+    },
+    {
+      "file": "underwater-column-gameplay-v1.png",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGB",
+      "bytes": 2039258,
+      "sha256": "cab32ec2f34b43f8d4cf73d00ead504a5602ebf6c1ce1beaf882308e6dc1b99c",
+      "git_blob_sha": "afe82c113e744169db094b8fbfb22f104324efed",
+      "kind": "underwater_background",
+      "has_seafloor": false,
+      "layout_note": "Quiet center, sunlit upper water transitioning to deep navy. This is a non-tileable atmosphere plate; do not repeat the light surface at each depth."
+    },
+    {
+      "file": "angler-gameplay-base-v1.png",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "bytes": 1884904,
+      "sha256": "0e81a4fa17d6e1093db3be9cc26116ea7f5a58b80f64c1bc227b3991899d8c9b",
+      "git_blob_sha": "921bb77772428c2a7ed351a6af8d9d399e893888",
+      "kind": "angler_base",
+      "native_facing": "right",
+      "rod_and_line_included": false,
+      "forearms_removed": true,
+      "rig_source_file": "angler-gameplay-no-rod-v1.png",
+      "rig_points_px": {
+        "near_elbow": [
+          414,
+          524
+        ],
+        "near_grip": [
+          670,
+          555
+        ],
+        "far_elbow": [
+          699,
+          481
+        ],
+        "far_grip": [
+          860,
+          458
+        ],
+        "hip": [
+          465,
+          710
+        ]
+      },
+      "source_forearm_cutout_polygons_px": {
+        "near": [
+          [
+            420,
+            484
+          ],
+          [
+            493,
+            510
+          ],
+          [
+            617,
+            521
+          ],
+          [
+            638,
+            510
+          ],
+          [
+            657,
+            508
+          ],
+          [
+            680,
+            518
+          ],
+          [
+            684,
+            529
+          ],
+          [
+            707,
+            537
+          ],
+          [
+            718,
+            548
+          ],
+          [
+            714,
+            560
+          ],
+          [
+            720,
+            570
+          ],
+          [
+            711,
+            582
+          ],
+          [
+            693,
+            592
+          ],
+          [
+            681,
+            602
+          ],
+          [
+            659,
+            601
+          ],
+          [
+            638,
+            591
+          ],
+          [
+            622,
+            582
+          ],
+          [
+            560,
+            579
+          ],
+          [
+            490,
+            577
+          ],
+          [
+            426,
+            565
+          ],
+          [
+            397,
+            551
+          ],
+          [
+            394,
+            534
+          ],
+          [
+            402,
+            510
+          ]
+        ],
+        "far": [
+          [
+            704,
+            440
+          ],
+          [
+            756,
+            447
+          ],
+          [
+            811,
+            435
+          ],
+          [
+            823,
+            419
+          ],
+          [
+            841,
+            410
+          ],
+          [
+            864,
+            415
+          ],
+          [
+            871,
+            426
+          ],
+          [
+            893,
+            432
+          ],
+          [
+            908,
+            446
+          ],
+          [
+            907,
+            465
+          ],
+          [
+            898,
+            472
+          ],
+          [
+            899,
+            483
+          ],
+          [
+            884,
+            497
+          ],
+          [
+            865,
+            508
+          ],
+          [
+            845,
+            509
+          ],
+          [
+            829,
+            508
+          ],
+          [
+            814,
+            504
+          ],
+          [
+            791,
+            513
+          ],
+          [
+            741,
+            526
+          ],
+          [
+            703,
+            521
+          ],
+          [
+            680,
+            509
+          ],
+          [
+            678,
+            489
+          ],
+          [
+            689,
+            463
+          ]
+        ]
+      },
+      "source_cutout_note": "Approximate traced polygon boundaries, verified by overlay QA. Preserve originals and tune cuff overlap at final gameplay scale. Base plate is registered closely but is a generated edit, not pixel-identical outside the edited region. Start with small elbow rotations; derive rod anchors from the same transformed grip coordinates.",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "visible_bounds_alpha_gt16": [
+        156,
+        24,
+        894,
+        1512
+      ]
+    }
+  ]
+}
