@@ -1,9 +1,10 @@
-import {drawBoat,drawFish} from './art.js?v=harbor-r4';
-import {species} from './model.js?v=harbor-r4';
+import {drawBoat,drawFish} from './art.js?v=harbor-r6';
+import {liveWater} from './live-art.js?v=harbor-r6';
+import {species} from './model.js?v=harbor-r6';
 export const SCALE=16;
 // A continuous world transform magnifies the first metres without band-boundary jumps.
-export const worldY=d=>d<=0?d*40:16*d+528*(1-Math.exp(-d/22));
-export function worldDepth(y){if(y<=0)return y/40;let d=y/25;for(let i=0;i<5;i++)d-=(worldY(d)-y)/(16+24*Math.exp(-d/22));return Math.max(0,d);}
+export const worldY=d=>d<=0?d*64:16*d+1056*(1-Math.exp(-d/22));
+export function worldDepth(y){if(y<=0)return y/64;let d=y/40;for(let i=0;i<7;i++)d-=(worldY(d)-y)/(16+48*Math.exp(-d/22));return Math.max(0,d);}
 const ellipse=(c,x,y,rx,ry,col)=>{c.fillStyle=col;c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);c.fill();};
 const line=(c,pts,col,w=2)=>{c.strokeStyle=col;c.lineWidth=w;c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.stroke();};
 const poly=(c,pts,col)=>{c.fillStyle=col;c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();c.fill();};
@@ -77,6 +78,7 @@ const stops=[[0,[45,174,169]],[20,[28,139,154]],[60,[18,91,123]],[120,[15,52,82]
 function color(depth){let i=0;while(i<stops.length-2&&depth>stops[i+1][0])i++;const a=stops[i],b=stops[i+1],k=Math.max(0,Math.min(1,(depth-a[0])/(b[0]-a[0])));return `rgb(${a[1].map((v,j)=>Math.round(v+(b[1][j]-v)*k)).join(',')})`;}
 export function sea(c,w,h,t,camera,surface,top=0){
  for(let y=0;y<h;y+=6){c.fillStyle=color(worldDepth(y+camera-surface));c.fillRect(0,y,w,7);}
+ liveWater(c,w,h,camera,surface);
  const sy=surface-camera;if(sy>0){c.fillStyle=gradient(c,0,sy,'#f6deb0','#a8dcd0');c.fillRect(0,0,w,sy);ellipse(c,w*.84,sy-42,24,24,'#fff3c2');}
  c.save();c.globalAlpha=Math.max(0,.055-camera/15000);for(let i=0;i<4;i++)poly(c,[[i*w*.35-40,sy],[i*w*.35+12,sy],[i*w*.35+160,h],[i*w*.35+70,h]],'#dcf7c6');c.restore();
  // Particles and distant schools have world depths; the world changes with depth.

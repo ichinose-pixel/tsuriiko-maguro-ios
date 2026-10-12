@@ -1,4 +1,4 @@
-import {rods,baits,hints} from './catalog.js?v=harbor-r4';
+import {rods,baits,hints} from './catalog.js?v=harbor-r6';
 // Pure simulation and durable transactions. No browser, SDK, or wall clock dependency.
 export const species = [
  {id:'sardine',name:'イワシ',value:20,color:'#b4e2dc',size:24,min:0.5,weight:[.2,.6],shape:'slender'},
