@@ -1,4 +1,4 @@
-import {liveArt,paintedRig} from './live-art.js?v=harbor-r7-9416ef3';
+import {liveArt,paintedRig} from './live-art.js?v=approved-ef8560b';
 // One coordinate contract for the rendered rod and its line. All values are CSS pixels.
 const rotate=(x,y,a)=>({x:x*Math.cos(a)-y*Math.sin(a),y:x*Math.sin(a)+y*Math.cos(a)});
 export function boatRig({x,y,t,scale=1,phase,caught=0,reduced=false}){
